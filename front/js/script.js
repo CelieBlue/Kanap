@@ -11,10 +11,10 @@ fetch(urlProducts)
          response.json())
     
     .then(products => {
-        console.log(products);
+        console.table(products);
 
         for (let product of products) {
-
+        
         const newLink = document.createElement('a');
         const newArticle = document.createElement('article');
         const newURL = "http://localhost:3000/images/";
@@ -22,7 +22,8 @@ fetch(urlProducts)
         const newName = document.createElement('h3');
         const newDescription = document.createElement('p');
 
-        newLink.setAttribute("href", "./product.html");
+        // newLink.href = `product.html?id=${products[product]._id}`;
+        // newLink.setAttribute("href", "./product.html?id=${product._id}");
         newArticle.textContent = "";
         img.src = product.imageUrl;
         img.alt = product.altTxt;
@@ -36,26 +37,21 @@ fetch(urlProducts)
         newArticle.appendChild(img);
         newArticle.appendChild(newName);
         newArticle.appendChild(newDescription);
+
         
-        let newLocation = window.location;
-        newLocation = product._id;
-        console.log(newLocation);
+        // for (let linkProduct of linkProducts) {
+        //     let oneProduct = linkProducts[linkProduct];
+        //     oneProduct.addEventListener('click', () => {
+        //         // console.log(linkProducts);
+
+        //         window.location   = `product.html?${linkProducts._id}`;
+        //     })
+        // }  
+
+        // let newLocation = window.location;
+        // newLocation = product._id;
+        // console.log(newLocation);
         }
-
-        
-
-
-        let linkProducts = document.querySelectorAll('#items a');
-        // console.log(linkProducts);
-
-        for (let linkProduct of linkProducts) {
-            document.addEventListener('click', () => {
-                console.log(linkProducts);
-
-                window.location = `product.html?${linkProducts._id}`;
-            })
-        }
-        
     })
     
     .catch(function(error) {
