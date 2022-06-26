@@ -1,7 +1,7 @@
 /**
  * Send a request to the local API of products with Fetch()
- * if response -> return JSON
- * Send products in the page
+ * if response -> return data in javaScript .JSON
+ * Second promise "products" -> return data in "Products"
  */
 
 const urlProducts = `http://localhost:3000/api/products`;
@@ -13,44 +13,35 @@ fetch(urlProducts)
     .then(products => {
         console.table(products);
 
+
         for (let product of products) {
         
-        const newLink = document.createElement('a');
-        const newArticle = document.createElement('article');
-        const newURL = "http://localhost:3000/images/";
-        const img = document.createElement('img');
-        const newName = document.createElement('h3');
-        const newDescription = document.createElement('p');
+        //Create all the elements in the section "Items"    
 
-        // newLink.href = `product.html?id=${products[product]._id}`;
-        // newLink.setAttribute("href", "./product.html?id=${product._id}");
+        let newLink = document.createElement('a');
+        let newArticle = document.createElement('article');
+        let newURL = "http://localhost:3000/images/";
+        let img = document.createElement('img');
+        let newName = document.createElement('h3');
+        let newDescription = document.createElement('p');
+
+        //Inject the API data to the elements
+
+        newLink.href = `./product.html?id=${products[product]._id}`;
+        console.log(newLink.href);
         newArticle.textContent = "";
         img.src = product.imageUrl;
         img.alt = product.altTxt;
         newName.textContent = product.name;
         newDescription.textContent = product.description;
 
-        // console.log(newName);
+        //Construct the nodes of the elements
 
         document.querySelector('#items').appendChild(newLink);
         newLink.appendChild(newArticle);
         newArticle.appendChild(img);
         newArticle.appendChild(newName);
         newArticle.appendChild(newDescription);
-
-        
-        // for (let linkProduct of linkProducts) {
-        //     let oneProduct = linkProducts[linkProduct];
-        //     oneProduct.addEventListener('click', () => {
-        //         // console.log(linkProducts);
-
-        //         window.location   = `product.html?${linkProducts._id}`;
-        //     })
-        // }  
-
-        // let newLocation = window.location;
-        // newLocation = product._id;
-        // console.log(newLocation);
         }
     })
     

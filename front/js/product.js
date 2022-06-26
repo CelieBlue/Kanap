@@ -10,18 +10,6 @@ fetch(urlProduct)
         let linkProducts = document.querySelectorAll('#items a');
         console.log(linkProducts);
 
-        // for (let linkProduct of linkProducts) {
-        //     let oneProduct = linkProducts[linkProduct];
-        //     oneProduct.addEventListener('click', () => {
-        //         // console.log(linkProducts);
-
-        //         window.location   = `product.html?${linkProducts._id}`;
-        //     })
-        // }  
-
-        // let newLocation = window.location;
-        // newLocation = product._id;
-        // console.log(newLocation);
 
         // let searchParams = new URLSearchParams(window.location.search);
 
