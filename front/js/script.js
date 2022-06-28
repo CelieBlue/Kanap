@@ -25,7 +25,7 @@ fetch(urlProducts)
         let newName = document.createElement('h3');
         let newDescription = document.createElement('p');
 
-        //Inject the API data to the elements
+        //Inject the API data in the elements
 
         newLink.href = `./product.html?id=${products[product]._id}`;
         console.log(newLink.href);
@@ -42,7 +42,8 @@ fetch(urlProducts)
         newArticle.appendChild(img);
         newArticle.appendChild(newName);
         newArticle.appendChild(newDescription);
-        }
+
+                }
     })
     
     .catch(function(error) {

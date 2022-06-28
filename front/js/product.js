@@ -1,32 +1,47 @@
-const urlProduct = `http://localhost:3000/api/products`;
+function appendChild(anchor) {
+    const items = document.querySelector('#items');
 
-fetch(urlProduct)
-    .then(response =>
-         response.json())
+    if(items != null) {
+        items.appendChild(anchor);
+    }
+}
+
+function makeAnchor(id) {
+    const anchor = document.createElement('a');
+
+    anchor.href="./product.html?id=" + id;
+}
+
+function addProducts(data) {
+    const id = data._id;
+
+    const anchor = makeAnchor(id);
+} 
+
+const constString = window.location.search;
+const urlParams = new URLSearchParams(constString);
+const id = urlParams.get("id");
+console.log({id});
+
+fetch('http://localhost:3000/api/products')
+
+.then((response)=> 
+    response.json())
+
+.then((data)=> {
     
-    .then(product => {
-        console.table(product);
+    // const newId = data[4]._id;
+    // console.log(newId);
 
-        let linkProducts = document.querySelectorAll('#items a');
-        console.log(linkProducts);
+    let _id = [];
 
+    for (let i of data) {
 
-        // let searchParams = new URLSearchParams(window.location.search);
-
-        // if (searchParams.has('_id')) {
-        //     let productId = searchParams.get('_id');
-        //     console.log(productId);
-        //     let value = searchParams.get(productId)
-        //     console.log(value)
-        // } else {
-        //     console.log("ça marche pas !!")
-        // }
-
-        // } else {
-        //     window.location.pathname = "./product.html";
-        // }
-        // console.log();
+        _id[i] = data._id; 
+        console.log(_id);
+    }
+   
+    }
     
-        
-      
-    })
+
+);
