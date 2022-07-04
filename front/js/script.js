@@ -4,6 +4,8 @@
  * Second promise "products" -> return data in "Products"
  */
 
+function getProducts(products) {
+
 const urlProducts = `http://localhost:3000/api/products`;
 
 fetch(urlProducts)
@@ -12,7 +14,16 @@ fetch(urlProducts)
     
     .then(products => {
         console.table(products);
+        showProducts(products);
 
+    })
+    
+    .catch(function(error) {
+        alert(error);
+    });
+}
+
+function showProducts(products) {
 
         for (let product of products) {
         
@@ -27,7 +38,7 @@ fetch(urlProducts)
 
         //Inject the API data in the elements
 
-        newLink.href = `./product.html?id=${products[product]._id}`;
+        newLink.href = `./product.html?id=${product._id}`;
         console.log(newLink.href);
         newArticle.textContent = "";
         img.src = product.imageUrl;
@@ -43,12 +54,11 @@ fetch(urlProducts)
         newArticle.appendChild(newName);
         newArticle.appendChild(newDescription);
 
-                }
-    })
-    
-    .catch(function(error) {
-        alert(error);
-    });
+        }
+    }
+
+    getProducts();
+    showProducts();
 
     
     

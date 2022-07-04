@@ -38,7 +38,7 @@ fetch('http://localhost:3000/api/products')
     for (let i of data) {
 
         _id[i] = data._id; 
-        console.log(_id);
+        console.log(_id[i]);
     }
    
     }
