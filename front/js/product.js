@@ -7,6 +7,9 @@
  const id = urlParams.get("id");
  console.log({id});
 
+ const coloris = document.querySelector('#colors');
+
+
 // function getProductId() {
 //     return new URL(location.href).searchParams.get("id");
 // }
@@ -35,22 +38,34 @@ async function getDataProduct(_dataProduct) {
 function showDataProduct(product) {
 
     //Select the elements in the div "Article"     
+
     let imgURL = "http://localhost:3000/images/";
-    let img = document.querySelector('.item__img');
+    let img = document.createElement("img");
+    document.querySelector('.item__img').appendChild(img);
     let title = document.querySelector('#title');
     let price = document.querySelector('#price')
-    let description = document.querySelector('.description');
-    let colors = document.querySelector('#colors');
+    let description = document.querySelector('#description');
+    
 
     //Put the value of the API in the element
+
     img.src = product.imageUrl;
     img.alt = product.altTxt;
-    title = product.name;
+    title.textContent = product.name;
     price.textContent = product.price;
     description.textContent = product.description;
 
-    for (color of colors) {
-        console.log(colors);
+
+    // Select the option value of the color
+
+    for (let color of product.colors) {
+
+        console.log(color);
+
+        let colorOption = document.createElement("option");
+        document.querySelector("#colors").appendChild(colorOption);
+        // colorOption.value = product.colors;
+        colorOption.textContent = color;
     }
     
 };
