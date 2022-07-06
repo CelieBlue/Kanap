@@ -4,11 +4,11 @@
  * Second promise "products" -> return data in "Products"
  */
 
-function getProducts(products) {
+async function getProducts(_products) {
 
 const urlProducts = `http://localhost:3000/api/products`;
 
-fetch(urlProducts)
+await fetch(urlProducts)
     .then(response =>
          response.json())
     
@@ -58,7 +58,6 @@ function showProducts(products) {
     }
 
     getProducts();
-    showProducts();
 
     
     

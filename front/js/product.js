@@ -1,47 +1,60 @@
-function appendChild(anchor) {
-    const items = document.querySelector('#items');
+/*Find the "id" of the article with window.location.search
+* and get it with URLSearchParams 
+*/
 
-    if(items != null) {
-        items.appendChild(anchor);
-    }
+ const idProduct = window.location.search;
+ const urlParams = new URLSearchParams(idProduct);
+ const id = urlParams.get("id");
+ console.log({id});
+
+// function getProductId() {
+//     return new URL(location.href).searchParams.get("id");
+// }
+
+
+async function getDataProduct(_dataProduct) {
+    
+    const dataProduct = `http://localhost:3000/api/products/${id}`;
+    
+    await fetch(dataProduct)
+    
+    .then((response)=> 
+        response.json())
+    
+    .then((product)=> {
+        console.log(product);
+        showDataProduct(product);
+    })
+    
+    .catch(function(error) {
+        alert(error);
+    });
 }
 
-function makeAnchor(id) {
-    const anchor = document.createElement('a');
 
-    anchor.href="./product.html?id=" + id;
-}
+function showDataProduct(product) {
 
-function addProducts(data) {
-    const id = data._id;
+    //Select the elements in the div "Article"     
+    let imgURL = "http://localhost:3000/images/";
+    let img = document.querySelector('.item__img');
+    let title = document.querySelector('#title');
+    let price = document.querySelector('#price')
+    let description = document.querySelector('.description');
+    let colors = document.querySelector('#colors');
 
-    const anchor = makeAnchor(id);
-} 
+    //Put the value of the API in the element
+    img.src = product.imageUrl;
+    img.alt = product.altTxt;
+    title = product.name;
+    price.textContent = product.price;
+    description.textContent = product.description;
 
-const constString = window.location.search;
-const urlParams = new URLSearchParams(constString);
-const id = urlParams.get("id");
-console.log({id});
-
-fetch('http://localhost:3000/api/products')
-
-.then((response)=> 
-    response.json())
-
-.then((data)=> {
-    
-    // const newId = data[4]._id;
-    // console.log(newId);
-
-    let _id = [];
-
-    for (let i of data) {
-
-        _id[i] = data._id; 
-        console.log(_id[i]);
-    }
-   
+    for (color of colors) {
+        console.log(colors);
     }
     
+};
 
-);
+getDataProduct();
+        
+       
