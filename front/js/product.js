@@ -7,8 +7,6 @@
  const id = urlParams.get("id");
  console.log({id});
 
- const coloris = document.querySelector('#colors');
-
 
 // function getProductId() {
 //     return new URL(location.href).searchParams.get("id");
@@ -26,7 +24,8 @@ async function getDataProduct(_dataProduct) {
     
     .then((product)=> {
         console.log(product);
-        showDataProduct(product);
+        showOneProduct(product);
+        saveCart(product);
     })
     
     .catch(function(error) {
@@ -35,7 +34,7 @@ async function getDataProduct(_dataProduct) {
 }
 
 
-function showDataProduct(product) {
+function showOneProduct(product) {
 
     //Select the elements in the div "Article"     
 
@@ -56,7 +55,7 @@ function showDataProduct(product) {
     description.textContent = product.description;
 
 
-    // Select the option value of the color
+    // Select and display the option value of the color
 
     for (let color of product.colors) {
 
@@ -64,12 +63,71 @@ function showDataProduct(product) {
 
         let colorOption = document.createElement("option");
         document.querySelector("#colors").appendChild(colorOption);
-        // colorOption.value = product.colors;
         colorOption.textContent = color;
     }
     
 };
 
 getDataProduct();
+
+
+//*************   CART    *************/
+
+// CREATE VARIABLES PRODUCT & CART TO GET THE ITEM IN THE LOCALSTORAGE
+
+let products = JSON.parse(localStorage.getItem("products"));
+let cart = JSON.parse(localStorage.getItem("cart"));
+
+// SAVE THE CART IN THE LOCALSTORAGE
+
+function saveCart(product) {
+    localStorage.setItem("product", JSON.stringify(product));
+    if(localStorage.getItem("cart")){
+         localStorage.setItem("cart", "[]");
+     }
+}
+
+// FIND A PRODUCT BY ITS ID AND ADD IT IN THE CART 
+
+//This function return the Id of the product found in products 
+function addProductToCart(productId) {
+    let product = products.find(function(product) {
+        return product.id == productId;
+    });
+
+    // If the cart is empty, the push method put a product in the cart
+    if(cart.length == 0) {
+        cart.push(product);
+    }
+    else {
+        // if the product exist, the find method return the product and
+        // store it in the variable "res" 
+        let res = cart.find(element => element.id == productId);
+        // If the product doesn't exist, the find method return the value indefined    
+        if(res == undefined) {
+            // if the value is indefined, the push method put a product in the cart
+            cart.push(product);
+        }
+    }
+saveCart();
+}
+
+// function removeProductToCart(productId));
+
+// function clearCart(productId);
         
-       
+// function getColorValue() {
+//     let color = document.querySelector("#colors");
+//     return color.value;
+// }
+
+// function getQuantity() {
+//     let quantity = document.querySelector("#quantity");
+//     return quantity.value;
+// }
+
+// saveCart();
+addProductToCart();
+
+// PUT AN ADDEVENTISLISTENER ON THE BUTTON
+

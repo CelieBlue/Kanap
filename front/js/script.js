@@ -14,7 +14,7 @@ await fetch(urlProducts)
     
     .then(products => {
         console.table(products);
-        showProducts(products);
+        showAllProducts(products);
 
     })
     
@@ -23,7 +23,7 @@ await fetch(urlProducts)
     });
 }
 
-function showProducts(products) {
+function showAllProducts(products) {
 
         for (let product of products) {
         
