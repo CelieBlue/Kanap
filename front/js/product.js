@@ -12,6 +12,7 @@
 //     return new URL(location.href).searchParams.get("id");
 // }
 
+//FETCH METHOD TO GET THE DATA IN THE API
 
 async function getDataProduct(_dataProduct) {
     
@@ -25,7 +26,9 @@ async function getDataProduct(_dataProduct) {
     .then((product)=> {
         console.log(product);
         showOneProduct(product);
-        saveCart(product);
+        saveProductInLocalStorage(product);
+        // clearLocalStorage(product);
+
     })
     
     .catch(function(error) {
@@ -33,6 +36,9 @@ async function getDataProduct(_dataProduct) {
     });
 }
 
+//*************   PRODUCT ELEMENTS    *************/
+
+// DISPLAY THE ELEMENTS OF THE PRODUCT
 
 function showOneProduct(product) {
 
@@ -65,6 +71,8 @@ function showOneProduct(product) {
         document.querySelector("#colors").appendChild(colorOption);
         colorOption.textContent = color;
     }
+
+    addProductToCart();
     
 };
 
@@ -80,14 +88,16 @@ let cart = JSON.parse(localStorage.getItem("cart"));
 
 // SAVE THE CART IN THE LOCALSTORAGE
 
-function saveCart(product) {
-    localStorage.setItem("product", JSON.stringify(product));
-    if(localStorage.getItem("cart")){
+function saveProductInLocalStorage(product) {
+    localStorage.setItem("products", JSON.stringify(product));
+
+    // Verify if the cart array is in the localStorage
+    if (localStorage.getItem("cart") == null){
          localStorage.setItem("cart", "[]");
      }
 }
 
-// FIND A PRODUCT BY ITS ID AND ADD IT IN THE CART 
+//FIND A PRODUCT BY ITS ID AND ADD IT IN THE CART 
 
 //This function return the Id of the product found in products 
 function addProductToCart(productId) {
@@ -109,12 +119,27 @@ function addProductToCart(productId) {
             cart.push(product);
         }
     }
-saveCart();
+    // localStorage.setItem("cart", JSON.stringify(cart));
+    saveProductInLocalStorage();
 }
 
-// function removeProductToCart(productId));
 
-// function clearCart(productId);
+
+
+
+// FUNCTION TO REMOVE A PRODUCT IN THE LOCALSTORAGE
+
+// function removeProductFromCart(product) {
+
+// }
+
+// FUNCTION TO CLEAR THE LOCALSTORAGE
+
+// function clearLocalStorage(productId) {
+//     localStorage.clear(productId)
+// }
+
+// FUNCTIONS TO GET THE COLOR VALUE AND THE QUANTITY
         
 // function getColorValue() {
 //     let color = document.querySelector("#colors");
@@ -125,9 +150,6 @@ saveCart();
 //     let quantity = document.querySelector("#quantity");
 //     return quantity.value;
 // }
-
-// saveCart();
-addProductToCart();
 
 // PUT AN ADDEVENTISLISTENER ON THE BUTTON
 
