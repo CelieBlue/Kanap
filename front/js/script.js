@@ -31,7 +31,6 @@ function showAllProducts(products) {
 
         let newLink = document.createElement('a');
         let newArticle = document.createElement('article');
-        let newURL = "http://localhost:3000/images/";
         let img = document.createElement('img');
         let newName = document.createElement('h3');
         let newDescription = document.createElement('p');
