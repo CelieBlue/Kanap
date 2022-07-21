@@ -24,7 +24,6 @@ async function getDataProduct(_dataProduct) {
         saveProductInLocalStorage(product);
         addProductToCart();
         // clearLocalStorage(product);
-        addToCart();
 
     })
     
@@ -87,7 +86,7 @@ function saveProductInLocalStorage(product) {
 //FIND A PRODUCT BY ITS ID AND ADD IT IN THE CART 
 
 //This function return the Id of the product found in products 
-function addProductToCart(productId) {
+function addToCart(productId) {
     let product = products.find(function(product) {
         return product.id == productId;
     });
@@ -108,15 +107,6 @@ function addProductToCart(productId) {
     }
     saveProductInLocalStorage();
 }
-
-
-
-
-// FUNCTION TO REMOVE A PRODUCT IN THE LOCALSTORAGE
-
-// function removeProductFromCart(product) {
-
-// }
 
 // FUNCTION TO CLEAR THE LOCALSTORAGE
 
@@ -150,11 +140,11 @@ function getQuantityValue() {
         return parseInt(quantity);
     }
 }
-    
 
 // PUT AN ADDEVENTISLISTENER ON THE BUTTON
     let btnAddToCart = document.querySelector("#addToCart");
-    btnAddToCart.addEventListener("click", ()=>  {
+    btnAddToCart.addEventListener("click", (colorOption, quantity, id)=>  {
+
         getColorValue();
         getQuantityValue()
 
@@ -164,7 +154,7 @@ function getQuantityValue() {
             id: id,
         };
 
-        addProductToCart(color, quantity, product);
+        addToCart(product);
     });
 
 
