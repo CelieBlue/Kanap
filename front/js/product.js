@@ -24,6 +24,7 @@ async function getDataProduct(_dataProduct) {
         saveProductInLocalStorage(product);
         addProductToCart();
         // clearLocalStorage(product);
+        addToCart();
 
     })
     
@@ -77,7 +78,7 @@ let cart = JSON.parse(localStorage.getItem("cart"));
 function saveProductInLocalStorage(product) {
     localStorage.setItem("products", JSON.stringify(product));
   
-    // Verify if the cart array is in the localStorage
+    // Verify if the cart array is in the localStorage. If not, the cart is stored
     if (localStorage.getItem("cart") == null){
          localStorage.setItem("cart", "[]");
      }
@@ -96,7 +97,7 @@ function addProductToCart(productId) {
         cart.push(product);
     }
     else {
-        // if the product exist, the find method return the product and
+        // if the product exist, the find method return the product by its Id and
         // store it in the variable "res" 
         let res = cart.find(element => element.id == productId);
         // If the product doesn't exist, the find method return the value undefined    
@@ -107,7 +108,6 @@ function addProductToCart(productId) {
     }
     saveProductInLocalStorage();
 }
-
 
 
 
@@ -124,18 +124,49 @@ function clearLocalStorage(productId) {
     localStorage.clear(productId)
 }
 
-// FUNCTIONS TO GET THE COLOR VALUE AND THE QUANTITY
+// FUNCTION TO TEST AND GET THE COLOR VALUE OF THE PRODUCT
         
-// function getColorValue() {
-//     let color = document.querySelector("#colors");
-//     return color.value;
-// }
+function getColorValue() {
+    const colorOption = document.querySelector("#colors").value;
 
-// function getQuantity() {
-//     let quantity = document.querySelector("#quantity");
-//     return quantity.value;
-// }
+    if (colorOption == null || colorOption === "" ) {
+        alert("Vous n'avez pas choisi de couleur");
+    } else { 
+        return colorOption;
+    }
+}
+
+// FUNCTION TO TEST AND GET THE QUANTITY VALUE OF THE PRODUCT
+
+function getQuantityValue() {
+    const quantity = document.querySelector("#quantity").value;
+
+    if (quantity == 0) {
+        alert("Vous n'avez pas choisi une quantité");
+    } else if (quantity > 100) {
+        alert("Vous ne pouvez pas commander plus de 100 exemplaires");
+        quantity == 0;
+    } else {
+        return parseInt(quantity);
+    }
+}
+    
 
 // PUT AN ADDEVENTISLISTENER ON THE BUTTON
+    let btnAddToCart = document.querySelector("#addToCart");
+    btnAddToCart.addEventListener("click", ()=>  {
+        getColorValue();
+        getQuantityValue()
 
-getDataProduct();
+        let product = {
+            color: colorOption,
+            quantity: quantity,
+            id: id,
+        };
+
+        addProductToCart(color, quantity, product);
+    });
+
+
+
+getDataProduct();                     
