@@ -21,7 +21,7 @@ async function getDataProduct(_dataProduct) {
     .then((product)=> {
         console.log(product);
         showOneProduct(product);
-        // saveProductInLocalStorage(product);
+        localStorage.clear();
         // addToCart();
         // clearLocalStorage(product);
 
@@ -67,25 +67,87 @@ function showOneProduct(product) {
 
 //*************   CART    *************/
 
-// CREATE VARIABLE CART TO GET THE ITEM IN THE LOCALSTORAGE 
+// FUNCTION TO TEST AND GET THE COLOR VALUE OF THE PRODUCT
+        
+function getColorValue() {
+    const colorOption = document.querySelector("#colors").value;
 
-let item = JSON.parse(localStorage.getItem("productValues"));
+    if (colorOption == null || colorOption === "" ) {
+        alert("Vous n'avez pas choisi de couleur");
+    } else { 
+        return colorOption;
+    }
+}
+
+// FUNCTION TO TEST AND GET THE QUANTITY VALUE OF THE PRODUCT
+
+function getQuantityValue() {
+    const quantity = document.querySelector("#quantity").value;
+
+    if (quantity == 0) {
+        alert("Vous n'avez pas choisi une quantité");
+    } else if (quantity > 100) {
+        alert("Vous ne pouvez pas commander plus de 100 exemplaires");
+    } else {
+        return parseInt(quantity);
+    }
+}
+
+// CREATE VARIABLE ITEM TO GET THE ITEM IN THE LOCALSTORAGE 
+// CREATE VARIABLE CART TO STORE THE ITEMS IN A ARRAY IN LOCALSTORAGE
+
+const item = JSON.parse(localStorage.getItem("productValues"));
 
 // PUT AN ADDEVENTISLISTENER ON THE BUTTON
     let btnAddToCart = document.querySelector("#addToCart");
     btnAddToCart.addEventListener("click", ()=>  {
 
+        //TAKE THE VALUE OF THE COLOR AND THE QUANTITY THAT THE USER CHOOSE
         const colorOption = document.querySelector("#colors").value;
         const quantity = document.querySelector("#quantity").value;
 
+        // VERIFY IF A COLOR IS SELECTED & IF THE QUANTITY IS NOT > 100
+        getColorValue();
+        getQuantityValue();
 
+        // CREATE AN OBJECT WITH THE INFOS OF THE USER AND STORE IT IN THE
+        // LOCAL STORAGE AS A STRING
         let productValues = {
             id: id,
             color: colorOption,
             quantity: quantity
         };
 
-        localStorage.setItem("productValues", JSON.stringify(productValues));
-    });
+        localStorage.setItem(id, JSON.stringify(productValues));
+
+        //CREATE THE VARIABLE CART TO STORE THE PRODUCT
+        let cart = JSON.parse(localStorage.getItem("allProducts"));
+
+        
+        // If the cart is empty, an array is created
+        // the push method put a product in the cart
+        if (cart === null) {
+            cart = [];
+            cart.push(productValues);
+            localStorage.setItem("allProducts", JSON.stringify(cart));
+            console.log(cart);
+            alert("Le produit a bien été ajouté au panier");
+        }
+       
+        else {
+            // IF THE PRODUCT EXIST WITH THE SAME COLOR, ADD QUANTITY
+            for (let i = 0; i < cart.length; i++) {
+                if (cart.id === id && cart.color == colorOption) {
+                    cart.quantity += quantity;
+                }
+                else {
+                    cart.push(productValues);
+                    localStorage.setItem("allProducts", JSON.stringify(cart));
+                }
+            }
+        return cart;
+        }      
+});
+      
 
 getDataProduct();                     
