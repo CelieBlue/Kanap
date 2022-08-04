@@ -70,7 +70,7 @@ function showOneProduct(product) {
 // FUNCTION TO TEST AND GET THE COLOR VALUE OF THE PRODUCT
         
 function getColorValue() {
-    const colorOption = document.querySelector("#colors").value;
+    let colorOption = document.querySelector("#colors").value;
 
     if (colorOption == null || colorOption === "" ) {
         alert("Vous n'avez pas choisi de couleur");
@@ -82,7 +82,7 @@ function getColorValue() {
 // FUNCTION TO TEST AND GET THE QUANTITY VALUE OF THE PRODUCT
 
 function getQuantityValue() {
-    const quantity = document.querySelector("#quantity").value;
+    let quantity = document.querySelector("#quantity").value;
 
     if (quantity == 0) {
         alert("Vous n'avez pas choisi une quantité");
@@ -93,60 +93,74 @@ function getQuantityValue() {
     }
 }
 
-// CREATE VARIABLE ITEM TO GET THE ITEM IN THE LOCALSTORAGE 
-// CREATE VARIABLE CART TO STORE THE ITEMS IN A ARRAY IN LOCALSTORAGE
+function addToCart() {
+    // CREATE VARIABLE ITEM TO GET THE ITEM IN THE LOCALSTORAGE 
+    // CREATE VARIABLE CART TO STORE THE ITEMS IN A ARRAY IN LOCALSTORAGE
+    let item = JSON.parse(localStorage.getItem("productValues"));
+    let cart = JSON.parse(localStorage.getItem("allProducts"));
+    
+    //TAKE THE VALUE OF THE COLOR AND THE QUANTITY THAT THE USER CHOOSE
+    let colorOption = document.querySelector("#colors").value;
+    let quantity = document.querySelector("#quantity").value;
 
-const item = JSON.parse(localStorage.getItem("productValues"));
+    // CREATE AN OBJECT WITH THE INFOS OF THE USER AND STORE IT IN THE
+    // LOCAL STORAGE AS A STRING
+    let productValues = {
+        id: id,
+        color: colorOption,
+        quantity: quantity
+    };
+    localStorage.setItem(id, JSON.stringify(productValues));
 
-// PUT AN ADDEVENTISLISTENER ON THE BUTTON
-    let btnAddToCart = document.querySelector("#addToCart");
-    btnAddToCart.addEventListener("click", ()=>  {
-
-        //TAKE THE VALUE OF THE COLOR AND THE QUANTITY THAT THE USER CHOOSE
-        const colorOption = document.querySelector("#colors").value;
-        const quantity = document.querySelector("#quantity").value;
+    // If the cart is empty, an array is created
+    // the push method put a product in the cart
+    if (cart == null) {
+        cart = [];
 
         // VERIFY IF A COLOR IS SELECTED & IF THE QUANTITY IS NOT > 100
         getColorValue();
         getQuantityValue();
 
-        // CREATE AN OBJECT WITH THE INFOS OF THE USER AND STORE IT IN THE
-        // LOCAL STORAGE AS A STRING
-        let productValues = {
-            id: id,
-            color: colorOption,
-            quantity: quantity
-        };
-
-        localStorage.setItem(id, JSON.stringify(productValues));
-
-        //CREATE THE VARIABLE CART TO STORE THE PRODUCT
-        let cart = JSON.parse(localStorage.getItem("allProducts"));
-
-        
-        // If the cart is empty, an array is created
-        // the push method put a product in the cart
-        if (cart === null) {
-            cart = [];
-            cart.push(productValues);
-            localStorage.setItem("allProducts", JSON.stringify(cart));
-            console.log(cart);
-            alert("Le produit a bien été ajouté au panier");
-        }
-       
-        else {
-            // IF THE PRODUCT EXIST WITH THE SAME COLOR, ADD QUANTITY
-            for (let i = 0; i < cart.length; i++) {
-                if (cart.id === id && cart.color == colorOption) {
-                    cart.quantity += quantity;
-                }
-                else {
-                    cart.push(productValues);
-                    localStorage.setItem("allProducts", JSON.stringify(cart));
-                }
+        cart.push(productValues);
+        localStorage.setItem("allProducts", JSON.stringify(cart));
+        console.log(cart);
+        alert("Le produit a bien été ajouté au panier");
+    }
+    else if (cart != null) {
+        cart.push(productValues);
+        localStorage.setItem("allProducts", JSON.stringify(cart));
+        console.log(cart);
+        alert("Le produit a bien été ajouté au panier");
+    }
+   
+    else {
+        // IF THE PRODUCT EXIST WITH THE SAME COLOR, ADD QUANTITY
+        for (let i = 0; i < cart.length; i++) {
+            if (cart.id === id && cart.color == colorOption) {
+                cart.quantity += quantity;
             }
-        return cart;
-        }      
+            else {
+                cart.push(productValues);
+                localStorage.setItem("allProducts", JSON.stringify(cart));
+            }
+        }
+    return cart;
+    }      
+
+}
+
+
+
+// PUT AN ADDEVENTISLISTENER ON THE BUTTON
+let btnAddToCart = document.querySelector("#addToCart");
+btnAddToCart.addEventListener("click", ()=>  {
+
+    addToCart();
+    //List of the products
+    console.log(localStorage.getItem("allProducts"));
+    // Last product
+    console.log(localStorage.getItem("productValues"));
+        
 });
       
 
