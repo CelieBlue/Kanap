@@ -1,8 +1,7 @@
-/**
- * Send a request to the local API of products with Fetch()
+/** Send a request to the local API of products with Fetch()
  * if response -> return data in javaScript .JSON
  * Second promise "products" -> return data in "Products"
- */
+ **/
 
 async function getProducts(_products) {
 
