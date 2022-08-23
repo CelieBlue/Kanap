@@ -75,15 +75,15 @@ function addProductValuesToLocalStorage() {
      // CREATE AN OBJECT "productValues" WITH THE INFOS SELECTED BY THE USER AND STORE IT IN THE
     // LOCAL STORAGE AS A STRING
     let productValues = {
-        id:   id,
+        _id:   id,
         color: colorOption,
         quantity: quantity
     };
     localStorage.setItem(id, JSON.stringify(productValues));
 
-    let verifColorAndQuantity = () => {
+    let verifyColorAndQuantity = () => {
     if (colorOption == null || colorOption === "" ) {
-        alert("Vous n'avez pas choisi de couleur");
+        alert("Sélectionnez une couleur");
         return false;
     }
     if (quantity <= 0) {
@@ -97,12 +97,11 @@ function addProductValuesToLocalStorage() {
         }
     }
 
-    if (colorOption == null || colorOption ==="" || quantity <= 0 || quantity >100) {
-        verifColorAndQuantity();
+    if (colorOption == null || colorOption ==="" || quantity <= 0 || quantity > 100) {
+        verifyColorAndQuantity();
     }else {
     /* If the cart is null, an array is created
     the push method put the productValues in the cart
-    If the cart is not empty, the push method put the productValues in the cart
     */
     if (cart == null) {
         cart = [];
@@ -110,30 +109,44 @@ function addProductValuesToLocalStorage() {
         cart.push(productValues);
         alert("Le produit a bien été ajouté au panier");
     }
-    /* If the cart is not null, the filter method 
+    /* If the cart is not null, the find method search if there is an element
+    which has the same color and the same id
+    If it finds one, it 
     */
     else if (cart != null) {
 
-        // let hasId = cart.filter(element => element.id === id);
-        cart.push(productValues);
-        alert("Le produit a bien été ajouté au panier");
-    }
-   
-    else {
-        let findProductInLocalStorage = cart.find(
-            (element) => element.id === id && element.color === colorOption);
-            console.log("findResult est " .id);
+        const findProductInLocalStorage = cart.find(
+            (element) => element._id === id && element.color === colorOption);
         
             if (findProductInLocalStorage) {
-                console.log("id trouvé");
-                cart.quantity += quantity;
+                console.log("id trouvé", findProductInLocalStorage);
+                // cart.quantity += quantity;
+            }
+            else {
+                cart.push(productValues);
+                alert("Le produit a bien été ajouté au panier");
+                console.log("produit ajouté nouvel id")
             }
 
-    return cart;
+            return cart;
+    }
+   
+    // else {
+    //     let findProductInLocalStorage = cart.find(
+    //         (element) => element.id === id && element.color === colorOption);
+    //         console.log("findResult est " .id);
+        
+    //         if (findProductInLocalStorage) {
+    //             console.log("id trouvé");
+    //             cart.quantity += quantity;
+    //         }
+
+    // return cart;
+    // }
     }
     //STORE THE PORODUCTVALUES IN THE LOCALSTORAGE AS A STRING  
     localStorage.setItem("allProducts", JSON.stringify(cart));
-    }
+
 }
 
 // PUT AN ADDEVENTISLISTENER ON THE BUTTON "Ajouter au panier"
