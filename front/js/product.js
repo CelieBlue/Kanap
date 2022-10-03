@@ -70,95 +70,93 @@ let cart = JSON.parse(localStorage.getItem("allProducts"));
 function addProductValuesToLocalStorage() {
     //TAKE THE VALUE OF THE COLOR AND THE QUANTITY THAT THE USER CHOOSE
     let colorOption = document.querySelector("#colors").value;
-    let quantity = document.querySelector("#quantity").value;
+    let qty = document.querySelector("#quantity").value;
 
-     // CREATE AN OBJECT "productValues" WITH THE INFOS SELECTED BY THE USER AND STORE IT IN THE
-    // LOCAL STORAGE AS A STRING
+    // CREATE AN OBJECT "productValues" WITH THE INFOS SELECTED BY THE USER
     let productValues = {
         _id:   id,
         color: colorOption,
-        quantity: quantity
+        quantity: qty
     };
+    //STORE THE OBJECT "PRODUCTVALUES" IN THE LOCALSTORAGE AS A STRING  
     localStorage.setItem(id, JSON.stringify(productValues));
 
+    /*THIS FUNCTION VERIFY IF THE USER HAS CHOSEN A COLOR AND A QUANTITY < 0 AND > 100.
+    IF NOT : THERE IS AN ALERT
+    */
     let verifyColorAndQuantity = () => {
     if (colorOption == null || colorOption === "" ) {
         alert("Sélectionnez une couleur");
         return false;
     }
-    if (quantity <= 0) {
+    if (qty <= 0) {
         alert("Entrez une quantité");
         return false;
-        } else if (quantity > 100) {
+        } else if (qty > 100) {
         alert("Vous ne pouvez pas commander plus de 100 exemplaires");
         return false;
         } else {
-            return quantity;
+            return qty;
         }
     }
 
-    if (colorOption == null || colorOption ==="" || quantity <= 0 || quantity > 100) {
+    if (colorOption == null || colorOption ==="" || qty <= 0 || qty > 100) {
         verifyColorAndQuantity();
     }else {
     /* If the cart is null, an array is created
     the push method put the productValues in the cart
     */
-    if (cart == null) {
-        cart = [];
-        // PUSH THE PRODUCTVALUES IN THE LOCALSTORAGE
-        cart.push(productValues);
-        alert("Le produit a bien été ajouté au panier");
-    }
-    /* If the cart is not null, the find method search if there is an element
-    which has the same color and the same id
-    If it finds one, it 
-    */
-    else if (cart != null) {
+        if (cart == null) {
+            cart = [];
+            cart.push(productValues);
+            //SAVE ALLPRODUCTS BACK TO LOCAL STORAGE  
+            localStorage.setItem("allProducts", JSON.stringify(cart));
+            alert("Le produit a bien été ajouté au panier");
+        }
+       
+        /* If the cart is not null, the find method search if there is an element
+        which has the same color and the same id
+        If it finds one, it increase the quantity
+        if it doesn'f find one, it push the new producValues in the cart
+        */
+        else if (cart != null) {
 
-        const findProductInLocalStorage = cart.find(
-            (element) => element._id === id && element.color === colorOption);
+        // const findProductInCart = cart.find(
+        //     (element) => element._id === id && element.color === colorOption);
         
-            if (findProductInLocalStorage) {
-                console.log("id trouvé", findProductInLocalStorage);
-                // cart.quantity += quantity;
-            }
-            else {
+        //     if (findProductInCart) {
+        //         // findProductInLocalStorage.quantity = (Number(findProductInLocalStorage.quantity)) + (Number(findProductInLocalStorage.qty));
+        //         findProductInCart.quantity = quantity;
+        //         // console.log("id trouvé", findProductInCart.quantity);
+        //     }
+            const findProductInCart = cart.find(element => {
+                if (element._id === id && element.color === colorOption) {
+                    element.quantity += qty;
+                    return true;
+                }
+                return false;
+            });
+        
+            if (!findProductInCart) {
                 cart.push(productValues);
                 alert("Le produit a bien été ajouté au panier");
                 console.log("produit ajouté nouvel id")
             }
-
-            return cart;
+            //SAVE ALLPRODUCTS BACK TO LOCALSTORAGE  
+            localStorage.setItem("allProducts", JSON.stringify(cart));
+        }
     }
-   
-    // else {
-    //     let findProductInLocalStorage = cart.find(
-    //         (element) => element.id === id && element.color === colorOption);
-    //         console.log("findResult est " .id);
-        
-    //         if (findProductInLocalStorage) {
-    //             console.log("id trouvé");
-    //             cart.quantity += quantity;
-    //         }
-
-    // return cart;
-    // }
-    }
-    //STORE THE PORODUCTVALUES IN THE LOCALSTORAGE AS A STRING  
-    localStorage.setItem("allProducts", JSON.stringify(cart));
-
 }
 
 // PUT AN ADDEVENTISLISTENER ON THE BUTTON "Ajouter au panier"
 let btnAddToBasket = document.querySelector("#addToCart");
+
 btnAddToBasket.addEventListener("click", ()=>  {
-    
     addProductValuesToLocalStorage();
     //List of the products
     console.log(localStorage.getItem("allProducts"));
     //Last product
     console.log(localStorage.getItem("productValues"));
-        
 });
       
 
