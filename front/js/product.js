@@ -70,7 +70,7 @@ let cart = JSON.parse(localStorage.getItem("allProducts"));
 function addProductValuesToLocalStorage() {
     //TAKE THE VALUE OF THE COLOR AND THE QUANTITY THAT THE USER CHOOSE
     let colorOption = document.querySelector("#colors").value;
-    let qty = document.querySelector("#quantity").value;
+    let qty = parseInt(document.querySelector("#quantity").value);
 
     // CREATE AN OBJECT "productValues" WITH THE INFOS SELECTED BY THE USER
     let productValues = {
@@ -121,21 +121,30 @@ function addProductValuesToLocalStorage() {
         */
         else if (cart != null) {
 
-        // const findProductInCart = cart.find(
-        //     (element) => element._id === id && element.color === colorOption);
-        
-        //     if (findProductInCart) {
-        //         // findProductInLocalStorage.quantity = (Number(findProductInLocalStorage.quantity)) + (Number(findProductInLocalStorage.qty));
-        //         findProductInCart.quantity = quantity;
-        //         // console.log("id trouvé", findProductInCart.quantity);
-        //     }
+            // const findProductInCart = cart.find(element => {
+            //     if (element._id === id && element.color === colorOption) {
+            //         element.quantity + qty;
+            //         localStorage.setItem("allProducts", JSON.stringify(cart));
+            //         return true;
+            //     }
+            //     return false;
+            // });
+
             const findProductInCart = cart.find(element => {
                 if (element._id === id && element.color === colorOption) {
-                    element.quantity += qty;
-                    return true;
+                return true;
                 }
                 return false;
             });
+
+            if (findProductInCart) {
+                console.log(findProductInCart.quantity);
+                console.log(qty);
+                let newQty = parseInt(findProductInCart.quantity) + parseInt(qty);
+                findProductInCart.quantity = parseInt(newQty);
+                localStorage.setItem("allProducts", JSON.stringify(cart));
+                console.log(parseInt(newQty));
+            };
         
             if (!findProductInCart) {
                 cart.push(productValues);
