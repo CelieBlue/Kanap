@@ -93,7 +93,7 @@ function addProductValuesToLocalStorage() {
         alert("Entrez une quantité");
         return false;
         } else if (qty > 100) {
-        alert("Vous ne pouvez pas commander plus de 100 exemplaires");
+        alert("Vous ne pouvez pas commander plus de 100 exemplaires du même produit");
         return false;
         } else {
             return qty;
@@ -102,15 +102,15 @@ function addProductValuesToLocalStorage() {
 
     if (colorOption == null || colorOption ==="" || qty <= 0 || qty > 100) {
         verifyColorAndQuantity();
-    }else {
+
+    } else {
     /* If the cart is null, an array is created
     the push method put the productValues in the cart
+    the localStorage.setItem save allproducts back to local storage
     */
         if (cart == null) {
             cart = [];
             cart.push(productValues);
-            //SAVE ALLPRODUCTS BACK TO LOCAL STORAGE  
-            localStorage.setItem("allProducts", JSON.stringify(cart));
             alert("Le produit a bien été ajouté au panier");
         }
        
@@ -121,15 +121,6 @@ function addProductValuesToLocalStorage() {
         */
         else if (cart != null) {
 
-            // const findProductInCart = cart.find(element => {
-            //     if (element._id === id && element.color === colorOption) {
-            //         element.quantity + qty;
-            //         localStorage.setItem("allProducts", JSON.stringify(cart));
-            //         return true;
-            //     }
-            //     return false;
-            // });
-
             const findProductInCart = cart.find(element => {
                 if (element._id === id && element.color === colorOption) {
                 return true;
@@ -138,12 +129,16 @@ function addProductValuesToLocalStorage() {
             });
 
             if (findProductInCart) {
-                console.log(findProductInCart.quantity);
-                console.log(qty);
+
                 let newQty = parseInt(findProductInCart.quantity) + parseInt(qty);
-                findProductInCart.quantity = parseInt(newQty);
-                localStorage.setItem("allProducts", JSON.stringify(cart));
-                console.log(parseInt(newQty));
+
+                if (newQty > 100) {
+                    alert("Vous avez déjà "+findProductInCart.quantity+" exemplaires. Vous ne pouvez pas commander plus de 100 exemplaires du même produit");
+                    return false;
+                    } else {
+                        findProductInCart.quantity = parseInt(newQty);
+                        alert("Le produit a bien été ajouté au panier");
+                    } 
             };
         
             if (!findProductInCart) {
@@ -154,7 +149,12 @@ function addProductValuesToLocalStorage() {
             //SAVE ALLPRODUCTS BACK TO LOCALSTORAGE  
             localStorage.setItem("allProducts", JSON.stringify(cart));
         }
+        resetQuantityValue();
     }
+}
+
+function resetQuantityValue() {
+    document.querySelector("#quantity").value = "0";
 }
 
 // PUT AN ADDEVENTISLISTENER ON THE BUTTON "Ajouter au panier"
