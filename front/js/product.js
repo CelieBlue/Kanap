@@ -68,7 +68,7 @@ function showOneProduct(product) {
 let cart = JSON.parse(localStorage.getItem("allProducts"));
 
 function addProductValuesToLocalStorage() {
-    //TAKE THE VALUE OF THE COLOR AND THE QUANTITY THAT THE USER CHOOSE
+    //STORE THE VALUE OF THE COLOR AND THE QUANTITY THAT THE USER CHOOSE
     let colorOption = document.querySelector("#colors").value;
     let qty = parseInt(document.querySelector("#quantity").value);
 
