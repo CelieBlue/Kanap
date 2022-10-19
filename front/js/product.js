@@ -133,7 +133,7 @@ function addProductValuesToLocalStorage() {
                 let newQty = parseInt(findProductInCart.quantity) + parseInt(qty);
 
                 if (newQty > 100) {
-                    alert("Vous avez déjà "+findProductInCart.quantity+" exemplaires. Vous ne pouvez pas commander plus de 100 exemplaires du même produit");
+                    alert("Vous avez déjà "+findProductInCart.quantity+" exemplaires de ce produit dans votre panier. Vous ne pouvez pas commander plus de 100 exemplaires du même produit");
                     return false;
                     } else {
                         findProductInCart.quantity = parseInt(newQty);
