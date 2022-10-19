@@ -37,7 +37,7 @@ function showOrderProducts(orderProducts) {
     let cartItemContentSettings = document.createElement('div');
     let cartItemContentSettingsQuantity = document.createElement('div');
     let productQty = document.createElement('p');
-    let itemQuantity = document.createElement('input');
+    let itemQuantity = document.createElement('p');
     let cartItemContentSettingsDelete = document.createElement('div');
     let deleteItem = document.createElement('p');
 
@@ -52,11 +52,11 @@ function showOrderProducts(orderProducts) {
     cartItemContentDescription.textContent = "";
     productName.textContent = product.name;
     productPrice.textContent = product.price+" €";
-    productColor.textContent = product.color+" à voir";
+    productColor.textContent = product.color;
     cartItemContentSettings.textContent = "";
-    cartItemContentSettingsQuantity = "";
-    productQty.textContent = product.quantity+" à voir";
-    itemQuantity.textContent = product.itemQty+" à voir";
+    cartItemContentSettingsQuantity.textContent = "";
+    productQty.textContent = product.quantity;
+    itemQuantity.textContent = product.itemQty;
     cartItemContentSettingsDelete.textContent = "";
     deleteItem.textContent = "Supprimer";
 
@@ -84,6 +84,11 @@ function showOrderProducts(orderProducts) {
     cartItemContentSettings.appendChild(cartItemContentSettingsQuantity);
     cartItemContentSettingsQuantity.className = "cart__item__content__settings__quantity";
     cartItemContentSettingsQuantity.appendChild(productQty);
+    productQty.className = "itemQuantity";
+    productQty.setAttribute("type", "number");
+    productQty.setAttribute("min", "1");
+    productQty.setAttribute("max", "100");
+    productQty.setAttribute("name", "itemQuantity");
     cartItemContentSettingsQuantity.appendChild(itemQuantity);
 
     // // DELETE ITEM
