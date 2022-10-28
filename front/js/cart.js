@@ -1,3 +1,8 @@
+//*************   CART    *************/
+
+// CREATE GLOBAL VARIABLE CART TO GET THE PRODUCTVALUES IF IT EXISTS IN THE LOCALSTORAGE 
+let cart = JSON.parse(localStorage.getItem("allProducts"));
+
 //FETCH METHOD TO GET THE DATA IN THE API
 
 async function getDataOrder(_orderProducts) {
@@ -19,6 +24,7 @@ async function getDataOrder(_orderProducts) {
         alert(error);
     });
 }
+
 
 function showOrderProducts(orderProducts) {
 
@@ -52,7 +58,8 @@ function showOrderProducts(orderProducts) {
     cartItemContentDescription.textContent = "";
     productName.textContent = product.name;
     productPrice.textContent = product.price+" €";
-    productColor.textContent = product.color;
+    // productColor.textContent = product.color;
+    productColor.textContent = `${cart.color}`;
     cartItemContentSettings.textContent = "";
     cartItemContentSettingsQuantity.textContent = "";
     productQty.textContent = product.quantity;

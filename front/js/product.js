@@ -111,6 +111,7 @@ function addProductValuesToLocalStorage() {
         if (cart == null) {
             cart = [];
             cart.push(productValues);
+            localStorage.setItem("allProducts", JSON.stringify(cart));
             alert("Le produit a bien été ajouté au panier");
         }
        
@@ -138,7 +139,7 @@ function addProductValuesToLocalStorage() {
                     } else {
                         findProductInCart.quantity = parseInt(newQty);
                         alert("Le produit a bien été ajouté au panier");
-                    } 
+                    }
             };
         
             if (!findProductInCart) {
