@@ -1,20 +1,13 @@
-//*************   CART    *************
-
 // CREATE GLOBAL VARIABLE CART TO GET THE PRODUCTVALUES IF IT EXISTS IN THE LOCALSTORAGE 
 let cart = JSON.parse(localStorage.getItem("allProducts"));
-console.log(cart);
 
 
+/*EventListener on the load ot the page that call the function getDataOrder
+to display the product stored in the localStorage  */
 window.addEventListener('load', getDataOrder);
 
-// const cartData = localStorage.getItem(localStorage.key(i));
-// console.log(cartData);
 
-
-// const cartItems = document.querySelector("#cart__items");
-
-// FETCH METHOD TO GET THE DATA IN THE API
-
+// FETCH METHOD TO GET THE DATA OF THE API AND THE LOCALSTORAGE
 async function getDataOrder() {
     
     const dataOrder = `http://localhost:3000/api/products`;
@@ -24,9 +17,11 @@ async function getDataOrder() {
     .then((response)=> 
         response.json())
     
-    .then((product)=> {
-        console.log(product);
-        showCartProducts(product);
+     .then(function(value) {
+
+        let api = value;
+
+        showCartProducts(api, cart);
         // localStorage.clear();
     })
     
@@ -36,20 +31,28 @@ async function getDataOrder() {
 }
 
 
-function showCartProducts() {
+function showCartProducts(api, cart) {
 
     if (cart === null) {
         
-        let cartItem = document.createElement('article');
+        const cartItem = document.createElement('article');
         cartItem.textContent = "Votre panier est vide";
         document.querySelector('#cart__items').appendChild(cartItem);
         cartItem.className = "cart__item";
+
+        const contactForm = document.querySelector('.cart__order');
+        contactForm.style.display="none";
 
     } else {
 
         for (let product of cart) {
 
-            console.log(product._id);
+        console.log(product._id);
+
+        /*THE FIND METHOD IS USED TO FIND AN ID IN THE API THAT
+        CORRESPONDS TO THE ID OF THE LOCALSTORAGE*/
+   
+        const dataApi = api.find((element) => element._id == product._id);
 
         // Create all the elements in the section "cart__Items"    
 
@@ -73,19 +76,18 @@ function showCartProducts() {
 
         cartItem.textContent = "";
         cartItemImg.textContent = "";
-        img.src = `${product.imageUrl}`;
-        img.alt = `${product.altTxt}`;
+        img.src = dataApi.imageUrl;
+        img.alt = dataApi.altTxt;
         cartItemContent.textContent = "";
         cartItemContentDescription.textContent = "";
-        productName.textContent = `${product.name}`;
-        productPrice.textContent = `${product.price}`+" €";
+        productName.textContent = dataApi.name;
+        productPrice.textContent = dataApi.price+" €";
         productColor.textContent = `${product.color}`;
         cartItemContentSettings.textContent = "";
         cartItemContentSettingsQuantity.textContent = "";
         productQty.textContent = 'Qté :';
-        // inputQuantity.setAttribute = product.quantity;
         inputQuantity.type = "number";
-        inputQuantity.classList.add("itemQuantity");
+        // inputQuantity.classList.add("itemQuantity");
         inputQuantity.name = "itemQuantity";
         inputQuantity.min = 1;
         inputQuantity.max = 100;
@@ -125,7 +127,7 @@ function showCartProducts() {
         inputQuantity.setAttribute("name", "itemQuantity");
         cartItemContentSettingsQuantity.appendChild(inputQuantity);
 
-        // // DELETE ITEM
+        //DELETE ITEM
         cartItemContent.appendChild(cartItemContentSettings);
         cartItemContentSettings.appendChild(cartItemContentSettingsDelete);
         cartItemContentSettingsDelete.className = "cart__item__content__settings__delete";
@@ -134,5 +136,4 @@ function showCartProducts() {
     }
 }
 
-// getDataOrder();
-// showCartProducts();
+

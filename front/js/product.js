@@ -67,6 +67,7 @@ function showOneProduct(product) {
 // CREATE GLOBAL VARIABLE CART TO GET THE PRODUCTVALUES IF IT EXISTS IN THE LOCALSTORAGE 
 let cart = JSON.parse(localStorage.getItem("allProducts"));
 
+
 function addProductValuesToLocalStorage() {
     //STORE THE VALUE OF THE COLOR AND THE QUANTITY THAT THE USER CHOOSE
     let colorOption = document.querySelector("#colors").value;
