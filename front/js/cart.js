@@ -22,6 +22,7 @@ async function getDataOrder() {
         let api = value;
 
         showCartProducts(api, cart);
+        totalProductsInCart();
         // localStorage.clear();
         removeOneProductInCart();
 
@@ -141,13 +142,18 @@ function showCartProducts(api, cart) {
 }
  
 
-// function totalProducts() {
+function totalProductsInCart() {
+    let qty = 0;
+    
+    for (let product of cart) {
+        qty += product.quantity;
+    }
+    console.log(qty);
 
-// }    
+    let totalProducts = document.querySelector("#totalQuantity");
+    totalProducts.textContent = qty;  
+}    
 
-// function totalPriceProducts() {
-
-// }
 
 // function clearCart() {
 
@@ -169,9 +175,9 @@ function removeOneProductInCart(_id) {
 
         let tempCart = cart.filter((element) =>element._id !== btn._id || element.color !== btn.color);
 
-        localStorage.setItem("allProducts", JSON.stringify(cart));
+        localStorage.setItem("allProducts", JSON.stringify(tempCart));
 
-        localStorage.removeItem(tempCart);
+        localStorage.removeItem(cart);
 
         console.log("article supprimé");
         }
