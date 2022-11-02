@@ -23,6 +23,7 @@ async function getDataOrder() {
 
         showCartProducts(api, cart);
         totalProductsInCart();
+        totalPriceProductsInCart(api, cart)
         // localStorage.clear();
         removeOneProductInCart();
 
@@ -85,7 +86,7 @@ function showCartProducts(api, cart) {
         cartItemContent.textContent = "";
         cartItemContentDescription.textContent = "";
         productName.textContent = dataApi.name;
-        productPrice.textContent = dataApi.price+" €";
+        productPrice.textContent = Intl.NumberFormat('fr-FR').format(dataApi.price)+" €";
         productColor.textContent = `${product.color}`;
         cartItemContentSettings.textContent = "";
         cartItemContentSettingsQuantity.textContent = "";
@@ -152,8 +153,22 @@ function totalProductsInCart() {
 
     let totalProducts = document.querySelector("#totalQuantity");
     totalProducts.textContent = qty;  
-}    
+}   
 
+function totalPriceProductsInCart(api, cart) {
+    let sum = 0;
+
+    for (let product of cart) {
+
+        const dataApi = api.find((element) => element._id == product._id);
+
+        sum += dataApi.price * product.quantity;
+    }
+    console.log(sum);
+
+    let totalProducts = document.querySelector("#totalPrice");
+    totalProducts.textContent = Intl.NumberFormat('fr-FR').format(sum);  
+}
 
 // function clearCart() {
 
