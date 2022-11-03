@@ -149,7 +149,7 @@ function showCartProducts(api, cart) {
     //DISPLAY THE TOTAL PRICE OF THE PRODUCTS IN THE CART
     let totalPrice = totalPriceProductsInCart(api, cart);
     let totalProducts = document.querySelector("#totalPrice");
-    totalProducts.textContent = Intl.NumberFormat('fr-FR').format(`${totalPrice}`);  
+    totalProducts.textContent =`${totalPrice}`;  
 }
  
 //THIS FUNCTION COUNTS AND RETURN THE TOTAL OF PRODUCTS IN THE CART
@@ -176,7 +176,7 @@ function totalPriceProductsInCart(api, cart) {
     }
     console.log(totalPrice);
 
-    return totalPrice;
+    return Intl.NumberFormat('fr-FR').format(totalPrice);
 }
 
 // function clearCart() {
