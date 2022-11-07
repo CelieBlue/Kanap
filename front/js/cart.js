@@ -23,11 +23,11 @@ async function getDataOrder() {
 
         showCartProducts(api, cart);
         totalProductsInCart();
-        totalPriceProductsInCart(api, cart)
+        totalPriceProductsInCart(api, cart);
+        removeProductInCart();      
         // localStorage.clear();
-        removeOneProductInCart();
 
-    })
+     })
     
     .catch(function(error) {
         alert(error);  
@@ -60,7 +60,6 @@ function showCartProducts(api, cart) {
         const dataApi = api.find((element) => element._id == product._id);
 
         // Create all the elements in the section "cart__Items"    
-
         let cartItem = document.createElement('article');
         let cartItemImg = document.createElement('div');
         let img = document.createElement('img');
@@ -76,9 +75,7 @@ function showCartProducts(api, cart) {
         let cartItemContentSettingsDelete = document.createElement('div');
         let deleteItem = document.createElement('p');
 
-
         //Inject the API data in the elements
-
         cartItem.textContent = "";
         cartItemImg.textContent = "";
         img.src = dataApi.imageUrl;
@@ -99,7 +96,6 @@ function showCartProducts(api, cart) {
         inputQuantity .value = `${product.quantity}`;
         cartItemContentSettingsDelete.textContent = "";
         deleteItem.textContent = "Supprimer";
-
 
         //Construct the nodes of the elements
         // IMG
@@ -152,6 +148,8 @@ function showCartProducts(api, cart) {
     totalProducts.textContent =`${totalPrice}`;  
 }
  
+//---------------------------------------------------------
+
 //THIS FUNCTION COUNTS AND RETURN THE TOTAL OF PRODUCTS IN THE CART
 function totalProductsInCart() {
     let totalQty = 0;
@@ -160,7 +158,6 @@ function totalProductsInCart() {
         totalQty += product.quantity;
     }
     console.log(totalQty);
-
     return totalQty;
 }   
 
@@ -169,45 +166,58 @@ function totalPriceProductsInCart(api, cart) {
     let totalPrice = 0;
 
     for (let product of cart) {
-
         const dataApi = api.find((element) => element._id == product._id);
-
         totalPrice += dataApi.price * product.quantity;
     }
     console.log(totalPrice);
-
     return Intl.NumberFormat('fr-FR').format(totalPrice);
 }
 
+//---------------------------------------------------------
 // function clearCart() {
-
+    // clear();
 // }
 
-// function increaseDecreaseProduct() {
+//---------------------------------------------------------
 
+// function removeProductInCart(cart) {
+
+//             const index = cart.findIndex(element => {return element == _id});
+//             console.log(index);
+//             cart.splice(index, 1);
+//             localStorage.setItem("allProducts", JSON.stringify(cart));
+//             window.location.reload();
+// }  
+
+// let btnRemove = document.querySelectorAll(".deleteItem");
+
+// for (let btn of btnRemove) {
+//     btn.addEventListener("click", ()=>  {
+//         removeProductInCart(cart);
+//         // console.log(localStorage.getItem("allProducts"));
+// });
 // }
 
+function removeProductInCart() {
 
-function removeOneProductInCart(_id) {
+    const btnRemove = document.querySelectorAll(".deleteItem");
+  
+    for (let i = 0; i < btnRemove.length; i++) {
+  
+        btnRemove[i].addEventListener("click", (event) => {
+        event.preventDefault();
 
-    let btnRemove = document.querySelectorAll(".deleteItem");
-    console.log(btnRemove);
-
-    for (let btn of btnRemove) {
-
-        btn.addEventListener("click", ()=>  {
-
-        cart = cart.filter((element) =>element._id != btn._id || element.color != btn.color);
-        console.log(cart);
-
-        localStorage.removeItem(btn._id);
-        localStorage.setItem("allProducts", JSON.stringify(cart));
-
-        
-
-        console.log("article supprimé");
-
-        // window.location.reload();
+        if (confirm("Êtes-vous sûr de vouloir supprimer ce produit de votre panier ?")) {
+  
+          let cartId = cart[i]._id;
+          let cartColor = cart[i].color;
+  
+          newCart = cart.filter(element => element._id !== cartId || element.color !== cartColor);
+  
+          localStorage.setItem("allProducts", JSON.stringify(newCart));
+  
+          window.location.reload();
         }
-    )}
+        })
+      }
 }
