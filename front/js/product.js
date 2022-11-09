@@ -128,7 +128,7 @@ function addProductValuesToLocalStorage() {
                 return true;
                 }
                 return false;
-            });
+            }); 
 
             if (findProductInCart) {
 

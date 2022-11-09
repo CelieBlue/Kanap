@@ -23,9 +23,10 @@ async function getDataOrder() {
 
         showCartProducts(api, cart);
         totalProductsInCart();
-        totalPriceProductsInCart(api, cart)
-        removeProductInCart()                // localStorage.clear();
-
+        totalPriceProductsInCart(api, cart);
+        removeProductInCart();     
+        changeItemQty(cart);
+         // localStorage.clear();
 
     })
     
@@ -33,9 +34,10 @@ async function getDataOrder() {
         alert(error);  
     });
 }
-
+//--------------------------------------------------------------------
 /* THIS FONCTION DISPLAY THE PRODUCTS IN THE CART
-WITH THE INFORMATIONS OF EACH PRODUCTS*/
+WITH THE INFORMATIONS OF EACH PRODUCTS COMING FROM
+THE DATA API AND THE LOCALSTORAGE*/
 function showCartProducts(api, cart) {
 
     if (cart === null) {
@@ -151,7 +153,8 @@ function showCartProducts(api, cart) {
     let totalProducts = document.querySelector("#totalPrice");
     totalProducts.textContent =`${totalPrice}`;  
 }
- 
+
+ //--------------------------------------------------------------------
 //THIS FUNCTION COUNTS AND RETURN THE TOTAL OF PRODUCTS IN THE CART
 function totalProductsInCart() {
     let totalQty = 0;
@@ -164,6 +167,7 @@ function totalProductsInCart() {
     return totalQty;
 }   
 
+//--------------------------------------------------------------------
 //THIS FUNCTION COUNTS AND RETURN THE TOTAL PRICE OF THE PRODUCTS
 function totalPriceProductsInCart(api, cart) {
     let totalPrice = 0;
@@ -179,15 +183,14 @@ function totalPriceProductsInCart(api, cart) {
     return Intl.NumberFormat('fr-FR').format(totalPrice);
 }
 
+//--------------------------------------------------------------------
 // function clearCart() {
 
 // }
 
-// function increaseDecreaseProduct() {
 
-// }
-
-
+//--------------------------------------------------------------------
+//THIS FUNCTION REMOVES A PRODUCT IN THE CART
 function removeProductInCart() {
 
     const btnRemove = document.querySelectorAll(".deleteItem");
@@ -197,18 +200,68 @@ function removeProductInCart() {
         btnRemove[i].addEventListener("click", (event) => {
         event.preventDefault();
 
-        if (confirm("Êtes-vous sûr de vouloir supprimer ce produit de votre panier ?")) {
+            if (confirm("Êtes-vous sûr de vouloir supprimer ce produit de votre panier ?")) {
   
-          let cartId = cart[i]._id;
-          let cartColor = cart[i].color;
+                let cartId = cart[i]._id;
+                let cartColor = cart[i].color;
   
-          newCart = cart.filter(element => element._id !== cartId || element.color !== cartColor);
+                let newCart = cart.filter(element => element._id !== cartId || element.color !== cartColor);
   
-          localStorage.setItem("allProducts", JSON.stringify(newCart));
+                localStorage.setItem("allProducts", JSON.stringify(newCart));
+
+                alert("Le produit a bien été supprimé du panier");
   
-          window.location.reload();
-        }
+                window.location.reload();
+            }
         })
-      }
+    }
 }
 
+//--------------------------------------------------------------------
+//THIS FUNCTION MODIFIES THE QUANTITY VALUE IN THE CART AND IN THE LOCALSTORAGE
+function changeItemQty(cart) {
+
+    const itemValue = document.querySelectorAll(".itemQuantity");
+
+        for (let i = 0; i < itemValue.length; i++) {
+
+            itemValue[i].addEventListener("change", () => { 
+
+                let itemQty = itemValue[i].value;
+                    console.log(itemQty);
+
+            if (itemQty > 100) {
+                alert("Vous ne pouvez pas commander plus de 100 exemplaires d'un produit")
+            }
+
+            if (itemQty >= 1 || itemQty <= 100) { 
+                const findProductInCart = cart.find(element => {
+                    if (element._id === itemValue[i].id && element.color === itemValue[i].colorOption) {
+                    return true;
+                    }
+                    return false;
+                }); 
+
+                if (findProductInCart) {
+                    // findProductInCart.quantity = parseInt(itemQty);
+                    alert("Le produit a bien été ajouté au panier");
+                    localStorage.setItem("allProducts", JSON.stringify(cart));
+                    window.location.reload();
+                }
+            }
+
+            if (itemQty < 1) {
+                if (confirm("Êtes-vous sûr de vouloir supprimer ce produit de votre panier ?")) {
+   
+                    let cartId = cart[i]._id;
+                    let cartColor = cart[i].color;
+
+                    let newCart = cart.filter(element => element._id !== cartId || element.color !== cartColor);
+                    localStorage.setItem("allProducts", JSON.stringify(newCart));
+                    alert("Le produit a bien été supprimé du panier");
+                    window.location.reload();
+                    }
+                }
+        })
+    }
+}
