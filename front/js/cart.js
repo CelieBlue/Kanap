@@ -26,7 +26,7 @@ async function getDataOrder() {
         totalPriceProductsInCart(api, cart);
         removeProductInCart();     
         changeItemQty(cart);
-         // localStorage.clear();
+        // localStorage.clear();
 
     })
     
@@ -49,6 +49,9 @@ function showCartProducts(api, cart) {
 
         const contactForm = document.querySelector('.cart__order');
         contactForm.style.display="none";
+
+        const cartPrice = document.querySelector('.cart__price');
+        cartPrice.style.display="none";
 
     } else {
 
@@ -98,7 +101,7 @@ function showCartProducts(api, cart) {
         inputQuantity.name = "itemQuantity";
         inputQuantity.min = 1;
         inputQuantity.max = 100;
-        inputQuantity .value = `${product.quantity}`;
+        inputQuantity.value = `${product.quantity}`;
         cartItemContentSettingsDelete.textContent = "";
         deleteItem.textContent = "Supprimer";
 
@@ -143,10 +146,10 @@ function showCartProducts(api, cart) {
         }
     }
 
-    //DISPLAY THE QUANTITY OF PRODUCTS IN THE CART
+    //DISPLAY THE TOTAL QUANTITY OF PRODUCTS IN THE CART
     let totalQty = totalProductsInCart();
     let totalQuantity = document.querySelector("#totalQuantity");
-    totalQuantity.textContent = `${totalQty}`;  
+    totalQuantity.textContent = `${totalQty}`;
 
     //DISPLAY THE TOTAL PRICE OF THE PRODUCTS IN THE CART
     let totalPrice = totalPriceProductsInCart(api, cart);
@@ -154,15 +157,15 @@ function showCartProducts(api, cart) {
     totalProducts.textContent =`${totalPrice}`;  
 }
 
- //--------------------------------------------------------------------
-//THIS FUNCTION COUNTS AND RETURN THE TOTAL OF PRODUCTS IN THE CART
+//--------------------------------------------------------------------
+//THIS FUNCTION COUNTS AND RETURN THE TOTAL PRODUCTS IN THE CART
 function totalProductsInCart() {
     let totalQty = 0;
     
     for (let product of cart) {
         totalQty += product.quantity;
     }
-    console.log(totalQty);
+    console.log("Total de produits dans le panier : " + totalQty);
 
     return totalQty;
 }   
@@ -178,7 +181,7 @@ function totalPriceProductsInCart(api, cart) {
 
         totalPrice += dataApi.price * product.quantity;
     }
-    console.log(totalPrice);
+    console.log("Prix total des produits : " + totalPrice);
 
     return Intl.NumberFormat('fr-FR').format(totalPrice);
 }
@@ -217,17 +220,18 @@ function removeProductInCart() {
     }
 }
 
-//--------------------------------------------------------------------
-//THIS FUNCTION MODIFIES THE QUANTITY VALUE IN THE CART AND IN THE LOCALSTORAGE
+// --------------------------------------------------------------------
+// THIS FUNCTION MODIFIES THE QUANTITY VALUE IN THE CART AND IN THE LOCALSTORAGE
 function changeItemQty(cart) {
 
-    const itemValue = document.querySelectorAll(".itemQuantity");
+    let itemValue = document.querySelectorAll(".itemQuantity");
 
         for (let i = 0; i < itemValue.length; i++) {
 
-            itemValue[i].addEventListener("change", () => { 
+            itemValue[i].addEventListener("change", (event) => { 
+                event.preventDefault();
 
-                let itemQty = itemValue[i].value;
+                let itemQty = Number(itemValue[i].value);
                     console.log(itemQty);
 
             if (itemQty > 100) {
@@ -243,13 +247,11 @@ function changeItemQty(cart) {
                 }); 
 
                 if (findProductInCart) {
-                    // findProductInCart.quantity = parseInt(itemQty);
-                    alert("Le produit a bien été ajouté au panier");
                     localStorage.setItem("allProducts", JSON.stringify(cart));
+                    alert("Le produit a bien été ajouté au panier");
                     window.location.reload();
                 }
             }
-
             if (itemQty < 1) {
                 if (confirm("Êtes-vous sûr de vouloir supprimer ce produit de votre panier ?")) {
    
@@ -264,4 +266,67 @@ function changeItemQty(cart) {
                 }
         })
     }
+};
+changeItemQty();
+
+
+//=================================== F O R M U L A I R E ==============================
+
+// VERIF NAME ----------------------------------------------------------
+let formFirstName = document.querySelector("#firstName").value;
+
+//Listen the value of the firsName field - RegExp to verify if firstName is validate
+formfirstName.addEventListener("change", function() {
+    validfirstName(this);
+});
+
+const validfirstName = function() {
+
 }
+
+// VERIF EMAIL ----------------------------------------------------------
+let formEmail = document.querySelector("#email");
+
+console.log(formEmail);
+
+//Listen the value of the Email field - RegExp to verify if EMAIL is validate
+formEmail.addEventListener("change", function() {
+    validEmail(formEmail);
+});
+
+const validEmail = function(inputEmail) {
+    //RegExp to validate email
+    let emailRegExp = new RegExp(
+        '^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$, g'
+    );
+
+    let testEmail = emailRegExp.test(inputEmail.value);
+    let emailErrorMsg = inputEmail.nextElementSibling;
+
+    if(testEmail) {
+        emailErrorMsg.innerHTML = "Adresse email valide";
+        emailErrorMsg.classList.remove('text-alert');
+        emailErrorMsg.classList.add('text-success');
+    } else {
+        emailErrorMsg.innerHTML = "Format d'adresse email non valide";
+        emailErrorMsg.classList.remove('text-success');
+        emailErrorMsg.classList.add('text-alert');
+    }
+
+    console.log(testEmail);
+};
+
+
+
+
+
+
+// let lastName = document.querySelector("#lastName").value;
+// let address = document.querySelector("#address").value;
+// let city = document.querySelector("#city").value;
+
+ 
+
+
+
+
