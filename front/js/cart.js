@@ -25,7 +25,7 @@ async function getDataOrder() {
         totalProductsInCart();
         totalPriceProductsInCart(api, cart);
         removeProductInCart();     
-        changeItemQty(cart);
+        modifyItemQty(cart);
         // localStorage.clear();
 
     })
@@ -177,6 +177,8 @@ function totalPriceProductsInCart(api, cart) {
 
     for (let product of cart) {
 
+
+        // the find() method search an element with the same color and the same id
         const dataApi = api.find((element) => element._id == product._id);
 
         totalPrice += dataApi.price * product.quantity;
@@ -193,7 +195,7 @@ function totalPriceProductsInCart(api, cart) {
 
 
 //--------------------------------------------------------------------
-//THIS FUNCTION REMOVES A PRODUCT IN THE CART
+//THIS FUNCTION REMOVES A PRODUCT IN THE CART WITH THE FILTER() METHOD
 function removeProductInCart() {
 
     const btnRemove = document.querySelectorAll(".deleteItem");
@@ -207,7 +209,8 @@ function removeProductInCart() {
   
                 let cartId = cart[i]._id;
                 let cartColor = cart[i].color;
-  
+
+                // the filter() method find and delete the element with the same color and the same id
                 let newCart = cart.filter(element => element._id !== cartId || element.color !== cartColor);
   
                 localStorage.setItem("allProducts", JSON.stringify(newCart));
@@ -221,8 +224,9 @@ function removeProductInCart() {
 }
 
 // --------------------------------------------------------------------
-// THIS FUNCTION MODIFIES THE QUANTITY VALUE IN THE CART AND IN THE LOCALSTORAGE
-function changeItemQty(cart) {
+/* THIS FUNCTION MODIFIES THE QUANTITY VALUE IN THE CART AND IN THE LOCALSTORAGE
+IF THE QUANTITY VALUE IS NEGATIVE, THE PRODUCT IS REMOVED*/
+function modifyItemQty(cart) {
 
     let itemValue = document.querySelectorAll(".itemQuantity");
 
@@ -239,18 +243,25 @@ function changeItemQty(cart) {
             }
 
             if (itemQty >= 1 || itemQty <= 100) { 
-                const findProductInCart = cart.find(element => {
-                    if (element._id === itemValue[i].id && element.color === itemValue[i].colorOption) {
-                    return true;
-                    }
-                    return false;
-                }); 
 
-                if (findProductInCart) {
+                //The closest() method find the parent of the input: article
+                const closestArticle = itemValue[i].closest("article");
+
+                //The dataset propriety accesses the values of the attribute id or color 
+                const targetProductId = closestArticle.dataset.id;
+                const targetProductColor = closestArticle.dataset.color;
+
+                // the find() method search an element with the same color and the same id
+                const findProductInCart = cart.find(element => {
+                    return element._id === targetProductId && element.color === targetProductColor;
+                });
+
+                findProductInCart.quantity = itemQty;
+
                     localStorage.setItem("allProducts", JSON.stringify(cart));
                     alert("Le produit a bien été ajouté au panier");
-                    window.location.reload();
-                }
+                    
+                window.location.reload();
             }
             if (itemQty < 1) {
                 if (confirm("Êtes-vous sûr de vouloir supprimer ce produit de votre panier ?")) {
@@ -267,13 +278,13 @@ function changeItemQty(cart) {
         })
     }
 };
-changeItemQty();
+modifyItemQty();
 
 
 //=================================== F O R M U L A I R E ==============================
 
-// VERIF NAME ----------------------------------------------------------
-let formFirstName = document.querySelector("#firstName").value;
+// VERIF FIRSTNAME ----------------------------------------------------------
+let formfirstName = document.querySelector("#firstName");
 
 //Listen the value of the firsName field - RegExp to verify if firstName is validate
 formfirstName.addEventListener("change", function() {
@@ -281,6 +292,42 @@ formfirstName.addEventListener("change", function() {
 });
 
 const validfirstName = function() {
+
+}
+
+// VERIF LASTNAME ----------------------------------------------------------
+let formlastName = document.querySelector("#lastName");
+
+//Listen the value of the firsName field - RegExp to verify if firstName is validate
+formlastName.addEventListener("change", function() {
+    validlastName(this);
+});
+
+const validlastName = function() {
+
+}
+
+// VERIF ADRESSE ----------------------------------------------------------
+let formaddress = document.querySelector("#address");
+
+//Listen the value of the firsName field - RegExp to verify if firstName is validate
+formaddress.addEventListener("change", function() {
+    validAddress(this);
+});
+
+const validaddress= function() {
+
+}
+
+// VERIF CITY ----------------------------------------------------------
+let formcity = document.querySelector("#address");
+
+//Listen the value of the firsName field - RegExp to verify if firstName is validate
+formcity.addEventListener("change", function() {
+    validcity(this);
+});
+
+const validcity= function() {
 
 }
 
@@ -316,14 +363,6 @@ const validEmail = function(inputEmail) {
     console.log(testEmail);
 };
 
-
-
-
-
-
-// let lastName = document.querySelector("#lastName").value;
-// let address = document.querySelector("#address").value;
-// let city = document.querySelector("#city").value;
 
  
 

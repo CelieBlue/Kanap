@@ -116,8 +116,7 @@ function addProductValuesToLocalStorage() {
             alert("Le produit a bien été ajouté au panier");
         }
        
-        /* If the cart is not null, the find method search if there is an element
-        which has the same color and the same id
+        /* If the cart is not null, the find() method search an element with the same color and the same id
         If it finds one, it increase the quantity
         if it doesn'f find one, it push the new producValues in the cart
         */
