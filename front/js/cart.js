@@ -284,6 +284,14 @@ modifyItemQty();
 
 //=================================== F O R M U L A I R E ==============================
 
+function submitForm(event) {
+    event.preventDefault();
+    
+    const form = document.querySelector("cart__order__form");
+    console.log(form.entries);
+}
+
+
 // VERIF FIRSTNAME ----------------------------------------------------------
 let formFirstName = document.querySelector("#firstName");
 
@@ -298,57 +306,111 @@ const validFirstName = function(inputFirstName) {
         '^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$, g'
     );
 
-    let testFirstName = firstNameRegExp.test(inputFirstName.value);
-    let emailErrorMsg = inputEmail.nextElementSibling;
+    let testFirstName = firstNameRegExp.test(inputFirstName);
+    let firstNameErrorMsg = inputFirstName.nextElementSibling;
 
-    if(testEmail) {
-        emailErrorMsg.innerHTML = "Adresse email valide";
-        emailErrorMsg.classList.remove('text-alert');
-        emailErrorMsg.classList.add('text-success');
+    if(testFirstName) {
+        firstNameErrorMsg.innerHTML = "Format de prénom valide";
+        firstNameErrorMsg.classList.remove('text-alert');
+        firstNameErrorMsg.classList.add('text-success');
     } else {
-        emailErrorMsg.innerHTML = "Format d'adresse email non valide";
-        emailErrorMsg.classList.remove('text-success');
-        emailErrorMsg.classList.add('text-alert');
+        firstNameErrorMsg.innerHTML = "Format de prénom non valide";
+        firstNameErrorMsg.classList.remove('text-success');
+        firstNameErrorMsg.classList.add('text-alert');
     }
 
-    console.log(testEmail);
-
+    console.log(testFirstName);
 }
+
 
 // VERIF LASTNAME ----------------------------------------------------------
 let formLastName = document.querySelector("#lastName");
 
-//Listen the value of the firsName field - RegExp to verify if firstName is validate
+//Listen the value of the lastName field - RegExp to verify if firstName is validate
 formLastName.addEventListener("change", function() {
     validLastName(formLastName);
 });
 
-const validlLstName = function() {
+const validLastName = function(inputLastName) {
+//RegExp to validate last name
+let lastNameRegExp = new RegExp(
+    '^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$, g'
+);
 
+let testLastName = lastNameRegExp.test(inputLastName);
+let lastNameErrorMsg = inputLastName.nextElementSibling;
+
+if(testLastName) {
+    lastNameErrorMsg.innerHTML = "Format de nom valide";
+    lastNameErrorMsg.classList.remove('text-alert');
+    lastNameErrorMsg.classList.add('text-success');
+} else {
+    lastNameErrorMsg.innerHTML = "Format de nom non valide";
+    lastNameErrorMsg.classList.remove('text-success');
+    lastNameErrorMsg.classList.add('text-alert');
+}
+
+console.log(testLastName);
 }
 
 // VERIF ADRESSE ----------------------------------------------------------
-let formAdress = document.querySelector("#address");
+let formAddress = document.querySelector("#address");
 
 //Listen the value of the firsName field - RegExp to verify if firstName is validate
-formAdress.addEventListener("change", function() {
-    validAddress(formAdress);
+formAddress.addEventListener("change", function() {
+    validAddress(formAddress);
 });
 
-const validAddress= function() {
+const validAddress= function(inputAddress) {
+//RegExp to validate Adresse
+let addressRegExp = new RegExp(
+    '^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$, g'
+);
 
+let testAddress = addressRegExp.test(inputAddress.value);
+let addressErrorMsg = inputAddress.nextElementSibling;
+
+if(testAddress) {
+   addressErrorMsg.innerHTML = "Adresse valide";
+   addressErrorMsg.classList.remove('text-alert');
+   addressErrorMsg.classList.add('text-success');
+} else {
+   addressErrorMsg.innerHTML = "Format d'adresse non valide";
+   addressErrorMsg.classList.remove('text-success');
+   addressErrorMsg.classList.add('text-alert');
+}
+
+console.log(testAddress);
 }
 
 // VERIF CITY ----------------------------------------------------------
-let formCity = document.querySelector("#address");
+let formCity = document.querySelector("#city");
 
 //Listen the value of the firsName field - RegExp to verify if firstName is validate
 formCity.addEventListener("change", function() {
     validCity(formCity);
 });
 
-const validCity= function() {
+const validCity= function(inputCity) {
+    //RegExp to validate City
+    let cityRegExp = new RegExp(
+        '^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$, g'
+    );
 
+    let testCity = cityRegExp.test(inputCity.value);
+    let cityErrorMsg = inputCity.nextElementSibling;
+
+    if(testCity) {
+        cityErrorMsg.innerHTML = "Ville valide";
+        cityErrorMsg.classList.remove('text-alert');
+        cityErrorMsg.classList.add('text-success');
+    } else {
+        cityErrorMsg.innerHTML = "Format de ville non valide";
+        cityErrorMsg.classList.remove('text-success');
+        cityErrorMsg.classList.add('text-alert');
+    }
+
+    console.log(testCity);
 }
 
 // VERIF EMAIL ----------------------------------------------------------
@@ -382,10 +444,3 @@ const validEmail = function(inputEmail) {
 
     console.log(testEmail);
 };
-
-
- 
-
-
-
-
