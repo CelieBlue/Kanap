@@ -110,6 +110,8 @@ function showCartProducts(api, cart) {
         // IMG
         document.querySelector('#cart__items').appendChild(cartItem);
         cartItem.className = "cart__item";
+        cartItem.dataset.id = product._id;
+        cartItem.dataset.color = product.color;
         cartItem.appendChild(cartItemImg);
         cartItemImg.appendChild(img);
         cartItemImg.className = "cart__item__img";
@@ -258,9 +260,8 @@ function modifyItemQty(cart) {
 
                 findProductInCart.quantity = itemQty;
 
-                    localStorage.setItem("allProducts", JSON.stringify(cart));
-                    alert("Le produit a bien été ajouté au panier");
-                    
+                localStorage.setItem("allProducts", JSON.stringify(cart));
+                       
                 window.location.reload();
             }
             if (itemQty < 1) {
@@ -284,50 +285,69 @@ modifyItemQty();
 //=================================== F O R M U L A I R E ==============================
 
 // VERIF FIRSTNAME ----------------------------------------------------------
-let formfirstName = document.querySelector("#firstName");
+let formFirstName = document.querySelector("#firstName");
 
 //Listen the value of the firsName field - RegExp to verify if firstName is validate
-formfirstName.addEventListener("change", function() {
-    validfirstName(this);
+formFirstName.addEventListener("change", function() {
+    validFirstName(formFirstName);
 });
 
-const validfirstName = function() {
+const validFirstName = function(inputFirstName) {
+    //RegExp to validate first name
+    let firstNameRegExp = new RegExp(
+        '^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$, g'
+    );
+
+    let testFirstName = firstNameRegExp.test(inputFirstName.value);
+    let emailErrorMsg = inputEmail.nextElementSibling;
+
+    if(testEmail) {
+        emailErrorMsg.innerHTML = "Adresse email valide";
+        emailErrorMsg.classList.remove('text-alert');
+        emailErrorMsg.classList.add('text-success');
+    } else {
+        emailErrorMsg.innerHTML = "Format d'adresse email non valide";
+        emailErrorMsg.classList.remove('text-success');
+        emailErrorMsg.classList.add('text-alert');
+    }
+
+    console.log(testEmail);
 
 }
 
 // VERIF LASTNAME ----------------------------------------------------------
-let formlastName = document.querySelector("#lastName");
+let formLastName = document.querySelector("#lastName");
 
 //Listen the value of the firsName field - RegExp to verify if firstName is validate
-formlastName.addEventListener("change", function() {
-    validlastName(this);
+formLastName.addEventListener("change", function() {
+    validLastName(formLastName);
 });
 
-const validlastName = function() {
+const validlLstName = function() {
 
 }
 
 // VERIF ADRESSE ----------------------------------------------------------
-let formaddress = document.querySelector("#address");
+let formAdress = document.querySelector("#address");
 
 //Listen the value of the firsName field - RegExp to verify if firstName is validate
-formaddress.addEventListener("change", function() {
-    validAddress(this);
+formAdress.addEventListener("change", function() {
+    validAddress(formAdress);
 });
 
-const validaddress= function() {
+const validAddress= function() {
 
 }
 
 // VERIF CITY ----------------------------------------------------------
-let formcity = document.querySelector("#address");
+let formCity = document.querySelector("#address");
 
 //Listen the value of the firsName field - RegExp to verify if firstName is validate
-formcity.addEventListener("change", function() {
-    validcity(this);
+formCity.addEventListener("change", function() {
+    validCity(formCity);
 });
 
-const validcity= function() {
+const validCity= function() {
 
 }
 
