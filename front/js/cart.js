@@ -296,7 +296,7 @@ let firstName = document.querySelector("#firstName");
 console.log(firstName);
 
 //Listen the value of the firsName field - RegExp to verify if firstName is validate
-form.firstName.addEventListener("change", function() {
+firstName.addEventListener("change", function() {
     validFirstName(firstName);
 })
 
@@ -319,7 +319,7 @@ const validFirstName = function(inputFirstName) {
         firstNameErrorMsg.classList.add('text-alert');
     }
 
-    console.log(form.firstName);
+    console.log(firstName);
 };
 
 
@@ -329,7 +329,7 @@ let lastName = document.querySelector("#lastName");
 console.log(lastName);
 
 //Listen the value of the lastName field - RegExp to verify if firstName is validate
-form.lastName.addEventListener("change", function() {
+lastName.addEventListener("change", function() {
     validLastName(lastName);
 });
 
@@ -361,30 +361,30 @@ let address = document.querySelector("#address");
 console.log(address);
 
 //Listen the value of the firsName field - RegExp to verify if firstName is validate
-form.Address.addEventListener("change", function() {
+address.addEventListener("change", function() {
     validAddress(address);
 });
 
 const validAddress= function(inputAddress) {
-//RegExp to validate Adresse
-let addressRegExp = new RegExp(
-    '^[a-zA-Z0-9\',.-]{2,50}$'
-);
+    //RegExp to validate Adresse
+    let addressRegExp = new RegExp(
+        '^[a-zA-Z0-9\',.-]{2,50}$'
+    );
 
-let testAddress = addressRegExp.test(inputAddress);
-let addressErrorMsg = inputAddress.nextElementSibling;
+    let testAddress = addressRegExp.test(inputAddress);
+    let addressErrorMsg = inputAddress.nextElementSibling;
 
-if(testAddress) {
-   addressErrorMsg.innerHTML = "Adresse valide";
-   addressErrorMsg.classList.remove('text-alert');
-   addressErrorMsg.classList.add('text-success');
-} else {
-   addressErrorMsg.innerHTML = "Format d'adresse non valide";
-   addressErrorMsg.classList.remove('text-success');
-   addressErrorMsg.classList.add('text-alert');
-}
+    if(testAddress) {
+        addressErrorMsg.innerHTML = "Adresse valide";
+        addressErrorMsg.classList.remove('text-alert');
+        addressErrorMsg.classList.add('text-success');
+    } else {
+        addressErrorMsg.innerHTML = "Format d'adresse non valide";
+        addressErrorMsg.classList.remove('text-success');
+        addressErrorMsg.classList.add('text-alert');
+    }
 
-console.log(testAddress);
+    console.log(testAddress);
 }
 
 // VERIF CITY ----------------------------------------------------------
@@ -393,7 +393,7 @@ let city = document.querySelector("#city");
 console.log(city);
 
 //Listen the value of the firsName field - RegExp to verify if firstName is validate
-form.City.addEventListener("change", function() {
+city.addEventListener("change", function() {
     validCity(city);
 });
 
@@ -425,7 +425,7 @@ let email = document.querySelector("#email");
 console.log(email);
 
 //Listen the value of the Email field - RegExp to verify if EMAIL is validate
-form.Email.addEventListener("change", function() {
+email.addEventListener("change", function() {
     validEmail(email);
 });
 
