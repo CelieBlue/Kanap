@@ -284,12 +284,16 @@ modifyItemQty();
 
 //=================================== F O R M U L A I R E ==============================
 
-function submitForm(event) {
+function getForm(event) {
     event.preventDefault();
+
+    if (cart === null) {
+        alert("Votre panier est vide. Veuillez ajouter un produit.");
+    }
     
     const form = document.querySelector("cart__order__form");
-    console.log(form.entries);
-}
+    console.log(form);
+
 
 
 // VERIF FIRSTNAME ----------------------------------------------------------
@@ -303,7 +307,7 @@ formFirstName.addEventListener("change", function() {
 const validFirstName = function(inputFirstName) {
     //RegExp to validate first name
     let firstNameRegExp = new RegExp(
-        '^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$, g'
+        '^[a-zA-Z,.\'-]{2,50}$'
     );
 
     let testFirstName = firstNameRegExp.test(inputFirstName);
@@ -320,7 +324,7 @@ const validFirstName = function(inputFirstName) {
     }
 
     console.log(testFirstName);
-}
+};
 
 
 // VERIF LASTNAME ----------------------------------------------------------
@@ -334,7 +338,7 @@ formLastName.addEventListener("change", function() {
 const validLastName = function(inputLastName) {
 //RegExp to validate last name
 let lastNameRegExp = new RegExp(
-    '^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$, g'
+    '^[a-zA-Z,.\'-]{2,50}$'
 );
 
 let testLastName = lastNameRegExp.test(inputLastName);
@@ -351,7 +355,7 @@ if(testLastName) {
 }
 
 console.log(testLastName);
-}
+};
 
 // VERIF ADRESSE ----------------------------------------------------------
 let formAddress = document.querySelector("#address");
@@ -364,10 +368,10 @@ formAddress.addEventListener("change", function() {
 const validAddress= function(inputAddress) {
 //RegExp to validate Adresse
 let addressRegExp = new RegExp(
-    '^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$, g'
+    '^[a-zA-Z0-9\',.-]{2,50}$'
 );
 
-let testAddress = addressRegExp.test(inputAddress.value);
+let testAddress = addressRegExp.test(inputAddress);
 let addressErrorMsg = inputAddress.nextElementSibling;
 
 if(testAddress) {
@@ -381,7 +385,7 @@ if(testAddress) {
 }
 
 console.log(testAddress);
-}
+};
 
 // VERIF CITY ----------------------------------------------------------
 let formCity = document.querySelector("#city");
@@ -394,10 +398,10 @@ formCity.addEventListener("change", function() {
 const validCity= function(inputCity) {
     //RegExp to validate City
     let cityRegExp = new RegExp(
-        '^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$, g'
+        '^[a-zA-Z,.\'-]{2,50}$'
     );
 
-    let testCity = cityRegExp.test(inputCity.value);
+    let testCity = cityRegExp.test(inputCity);
     let cityErrorMsg = inputCity.nextElementSibling;
 
     if(testCity) {
@@ -411,7 +415,7 @@ const validCity= function(inputCity) {
     }
 
     console.log(testCity);
-}
+};
 
 // VERIF EMAIL ----------------------------------------------------------
 let formEmail = document.querySelector("#email");
@@ -429,7 +433,7 @@ const validEmail = function(inputEmail) {
         '^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$, g'
     );
 
-    let testEmail = emailRegExp.test(inputEmail.value);
+    let testEmail = emailRegExp.test(inputEmail);
     let emailErrorMsg = inputEmail.nextElementSibling;
 
     if(testEmail) {
@@ -444,3 +448,5 @@ const validEmail = function(inputEmail) {
 
     console.log(testEmail);
 };
+}
+getForm();
