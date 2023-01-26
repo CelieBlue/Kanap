@@ -26,8 +26,8 @@ async function getDataOrder() {
         totalPriceProductsInCart(api, cart);
         removeProductInCart();     
         modifyItemQty(cart);
-        // localStorage.clear();
-
+        getForm(cart);
+        // postForm(cart);
     })
     
     .catch(function(error) {
@@ -190,11 +190,6 @@ function totalPriceProductsInCart(api, cart) {
     return Intl.NumberFormat('fr-FR').format(totalPrice);
 }
 
-//--------------------------------------------------------------------
-// function clearCart() {
-
-// }
-
 
 //--------------------------------------------------------------------
 //THIS FUNCTION REMOVES A PRODUCT IN THE CART WITH THE FILTER() METHOD
@@ -278,31 +273,32 @@ function modifyItemQty(cart) {
                 }
         })
     }
-};
-modifyItemQty();
+}
+modifyItemQty()
 
 
 //=================================== F O R M U L A I R E ==============================
-
-function getForm(event) {
-    event.preventDefault();
-
+//THIS FUNCTION CHECKS THE VALIDITY OF THE FORM DATA
+function getForm(cart) {
+    
     if (cart === null) {
         alert("Votre panier est vide. Veuillez ajouter un produit.");
     }
+    else {
     
     const form = document.querySelector("cart__order__form");
-    console.log(form);
-
+    // console.log(form);
 
 
 // VERIF FIRSTNAME ----------------------------------------------------------
-let formFirstName = document.querySelector("#firstName");
+let firstName = document.querySelector("#firstName");
+
+console.log(firstName);
 
 //Listen the value of the firsName field - RegExp to verify if firstName is validate
-formFirstName.addEventListener("change", function() {
-    validFirstName(formFirstName);
-});
+form.firstName.addEventListener("change", function() {
+    validFirstName(firstName);
+})
 
 const validFirstName = function(inputFirstName) {
     //RegExp to validate first name
@@ -323,16 +319,18 @@ const validFirstName = function(inputFirstName) {
         firstNameErrorMsg.classList.add('text-alert');
     }
 
-    console.log(testFirstName);
+    console.log(firstName);
 };
 
 
 // VERIF LASTNAME ----------------------------------------------------------
-let formLastName = document.querySelector("#lastName");
+let lastName = document.querySelector("#lastName");
+
+console.log(lastName);
 
 //Listen the value of the lastName field - RegExp to verify if firstName is validate
-formLastName.addEventListener("change", function() {
-    validLastName(formLastName);
+form.lastName.addEventListener("change", function() {
+    validLastName(lastName);
 });
 
 const validLastName = function(inputLastName) {
@@ -355,14 +353,16 @@ if(testLastName) {
 }
 
 console.log(testLastName);
-};
+}
 
 // VERIF ADRESSE ----------------------------------------------------------
-let formAddress = document.querySelector("#address");
+let address = document.querySelector("#address");
+
+console.log(address);
 
 //Listen the value of the firsName field - RegExp to verify if firstName is validate
-formAddress.addEventListener("change", function() {
-    validAddress(formAddress);
+form.Address.addEventListener("change", function() {
+    validAddress(address);
 });
 
 const validAddress= function(inputAddress) {
@@ -385,14 +385,16 @@ if(testAddress) {
 }
 
 console.log(testAddress);
-};
+}
 
 // VERIF CITY ----------------------------------------------------------
-let formCity = document.querySelector("#city");
+let city = document.querySelector("#city");
+
+console.log(city);
 
 //Listen the value of the firsName field - RegExp to verify if firstName is validate
-formCity.addEventListener("change", function() {
-    validCity(formCity);
+form.City.addEventListener("change", function() {
+    validCity(city);
 });
 
 const validCity= function(inputCity) {
@@ -415,16 +417,16 @@ const validCity= function(inputCity) {
     }
 
     console.log(testCity);
-};
+}
 
 // VERIF EMAIL ----------------------------------------------------------
-let formEmail = document.querySelector("#email");
+let email = document.querySelector("#email");
 
-console.log(formEmail);
+console.log(email);
 
 //Listen the value of the Email field - RegExp to verify if EMAIL is validate
-formEmail.addEventListener("change", function() {
-    validEmail(formEmail);
+form.Email.addEventListener("change", function() {
+    validEmail(email);
 });
 
 const validEmail = function(inputEmail) {
@@ -447,6 +449,67 @@ const validEmail = function(inputEmail) {
     }
 
     console.log(testEmail);
-};
+}
+}
 }
 getForm();
+
+/*THIS FUNCTION CHECKS THE FORM VALUES TO POST THEM IN THE LOCALSTORAGE
+/*PUT AN ADDEVENTLISTNER TO LISTEN WHEN THE ORDER BUTTON IS CLICKED */
+function postForm(cart) {
+
+    const btnOrder = document.querySelector("order");
+
+    if (btnOrder) {}
+
+    btnOrder.addEventListener("click", (event)=>  {
+        event.preventDefault();
+
+        let inputFirstName = document.querySelector("firstName");
+        let inputLastName = document.querySelector("lastName");
+        let inputAddress = document.querySelector("lasName");
+        let inputCity = document.querySelector("inputCity");
+        let inputEmail = document.querySelector("email");
+
+        //new cart to store the products of the cart
+        let newCart = [];
+
+        for (let product of cart) {
+            newCart.push(product.newCart);
+        }
+        console.log(newCart);
+
+        const order = {
+            contactDetails : {
+                firstName: inputFirstName.value,
+                lastName: inputLastName.value,
+                address: inputAddress.value,
+                city: inputCity.value,
+                email: inputEmail.value
+            },
+            products : newCart,
+        }
+
+        const postInfos = {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                "Content-type": 'application/json' 
+            },
+            body: JSON.stringify(order),
+        };
+
+        fetch("http://localhost:3000/api/products/order", postInfos)
+        .then((response) => response.json())
+        .then ((orderData) => {
+            console.log(orderData);
+            localStorage.clear();
+            localStorage.setItem("orderId", orderData.orderId);
+            
+            document.location.href = "confirmation.html";
+        })
+        .catch(error => {console.log(error)}); 
+        }
+    )
+}
+postForm();
