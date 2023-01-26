@@ -319,7 +319,7 @@ const validFirstName = function(inputFirstName) {
         firstNameErrorMsg.classList.add('text-alert');
     }
 
-    console.log(firstName);
+    console.log(form.firstName);
 };
 
 
