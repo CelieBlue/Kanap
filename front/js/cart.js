@@ -16,7 +16,9 @@ if (cart === null) {
     cartPrice.style.display = "none";
 
 } else {
-    getDataOrder();
+    /*EventListener on the load ot the page that call the function getDataOrder
+    to display the product stored in the localStorage  */
+    window.addEventListener('load', getDataOrder);
 }
 
 
@@ -233,11 +235,25 @@ function modifyItemQty(cart) {
             let itemQty = Number(itemValue[i].value);
             console.log(itemQty);
 
-            if (itemQty > 100) {
-                alert("Vous ne pouvez pas commander plus de 100 exemplaires d'un produit");
+            let verifyQuantity = () => {
+                if (itemQty <= 0) {
+                    alert("Entrez une quantité entre 1 et 100");
+                    return false;
+                } else if (itemQty > 100) {
+                    alert("Vous ne pouvez pas commander plus de 100 exemplaires du même produit");
+                    return false;
+                } else {
+                        return itemQty;
+                    }
             }
 
-            if (itemQty >= 1 || itemQty <= 100) {
+            if (itemQty <= 0 || itemQty >= 100) {
+
+                verifyQuantity();
+                
+            } else {
+
+                if (itemQty >= 0 || itemQty <= 100){
 
                 //The closest() method find the parent of the input: article
                 const closestArticle = itemValue[i].closest("article");
@@ -256,17 +272,7 @@ function modifyItemQty(cart) {
                 localStorage.setItem("allProducts", JSON.stringify(cart));
 
                 window.location.reload();
-            }
-            if (itemQty < 1) {
-                if (confirm("Êtes-vous sûr de vouloir supprimer ce produit de votre panier ?")) {
-
-                    let cartId = cart[i]._id;
-                    let cartColor = cart[i].color;
-
-                    let newCart = cart.filter(element => element._id !== cartId || element.color !== cartColor);
-                    localStorage.setItem("allProducts", JSON.stringify(newCart));
-                    alert("Le produit a bien été supprimé du panier");
-                    window.location.reload();
+                
                 }
             }
         });

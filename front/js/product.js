@@ -21,7 +21,6 @@ async function getDataProduct(_dataProduct) {
     .then((product)=> {
         console.log(product);
         showOneProduct(product);
-        // localStorage.clear();
     })
     
     .catch(function(error) {
@@ -86,16 +85,16 @@ function addProductValuesToLocalStorage() {
     IF NOT : THERE IS AN ALERT
     */
     let verifyColorAndQuantity = () => {
-    if (colorOption == null || colorOption === "" ) {
-        alert("Sélectionnez une couleur");
-        return false;
-    }
-    if (qty <= 0) {
-        alert("Entrez une quantité");
-        return false;
+        if (colorOption == null || colorOption === "" ) {
+            alert("Sélectionnez une couleur");
+            return false;
+        }
+        if (qty <= 0) {
+            alert("Entrez une quantité entre 1 et 100");
+            return false;
         } else if (qty > 100) {
-        alert("Vous ne pouvez pas commander plus de 100 exemplaires du même produit");
-        return false;
+            alert("Vous ne pouvez pas commander plus de 100 exemplaires du même produit");
+            return false;
         } else {
             return qty;
         }
