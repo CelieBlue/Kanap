@@ -56,10 +56,3 @@ function showAllProducts(products) {
     }
 
     getProducts();
-
-    
-    
-    
-
-
-   
