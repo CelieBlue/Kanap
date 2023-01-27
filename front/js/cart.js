@@ -97,7 +97,6 @@ function showCartProducts(api, cart) {
             cartItemContentSettingsQuantity.textContent = "";
             productQty.textContent = 'Qté :';
             inputQuantity.type = "number";
-            // inputQuantity.classList.add("itemQuantity");
             inputQuantity.name = "itemQuantity";
             inputQuantity.min = 1;
             inputQuantity.max = 100;
@@ -253,8 +252,6 @@ function modifyItemQty(cart) {
                 
             } else {
 
-                // if (itemQty >= 1 || itemQty <= 100){
-
                 //The closest() method find the parent of the input: article
                 const closestArticle = itemValue[i].closest("article");
 
@@ -272,8 +269,6 @@ function modifyItemQty(cart) {
                 localStorage.setItem("allProducts", JSON.stringify(cart));
 
                 window.location.reload();
-                
-                // }
             }
         });
     }
@@ -401,7 +396,7 @@ function getForm(cart) {
         const validCity = function (inputCity) {
             //RegExp to validate City
             let cityRegExp = new RegExp(
-                "^[a-zA-ZáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ,.' -]{1,100}$"
+                "^[a-zA-ZáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ,.' -]{1,50}$"
             );
 
             let testCity = cityRegExp.test(inputCity.value);
