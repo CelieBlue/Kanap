@@ -1,7 +1,11 @@
 // CREATE GLOBAL VARIABLE CART TO GET THE PRODUCTVALUES IF IT EXISTS IN THE LOCALSTORAGE 
 let cart = JSON.parse(localStorage.getItem("allProducts"));
 
-//This condition display a message when the card is empty
+
+/*EventListener on the load ot the page that call the function getDataOrder
+to display the product stored in the localStorage  */
+// window.addEventListener('load');
+
 if (cart === null) {
 
     const cartItem = document.createElement('article');
@@ -16,11 +20,8 @@ if (cart === null) {
     cartPrice.style.display = "none";
 
 } else {
-    /*EventListener on the load ot the page that call the function getDataOrder
-    to display the product stored in the localStorage  */
-    window.addEventListener('load', getDataOrder);
+    getDataOrder();
 }
-
 
 // FETCH METHOD TO GET THE DATA OF THE API AND THE LOCALSTORAGE
 async function getDataOrder() {
@@ -42,7 +43,6 @@ async function getDataOrder() {
             removeProductInCart();
             modifyItemQty(cart);
             getForm(cart);
-            // postForm(cart);
         })
 
         .catch(function (error) {
@@ -146,7 +146,7 @@ function showCartProducts(api, cart) {
             cartItemContentSettingsDelete.appendChild(deleteItem);
             deleteItem.className = "deleteItem";
         }
-    }
+    
 
     //DISPLAY THE TOTAL QUANTITY OF PRODUCTS IN THE CART
     let totalQty = totalProductsInCart();
@@ -157,7 +157,7 @@ function showCartProducts(api, cart) {
     let totalPrice = totalPriceProductsInCart(api, cart);
     let totalProducts = document.querySelector("#totalPrice");
     totalProducts.textContent = `${totalPrice}`;
-
+}
 
 //--------------------------------------------------------------------
 //THIS FUNCTION COUNTS AND RETURN THE TOTAL PRODUCTS IN THE CART
@@ -236,7 +236,7 @@ function modifyItemQty(cart) {
             console.log(itemQty);
 
             let verifyQuantity = () => {
-                if (itemQty <= 0) {
+                if (itemQty < 1) {
                     alert("Entrez une quantité entre 1 et 100");
                     return false;
                 } else if (itemQty > 100) {
@@ -247,13 +247,13 @@ function modifyItemQty(cart) {
                     }
             }
 
-            if (itemQty <= 0 || itemQty >= 100) {
+            if (itemQty < 1 || itemQty >= 100) {
 
                 verifyQuantity();
                 
             } else {
 
-                if (itemQty >= 0 || itemQty <= 100){
+                // if (itemQty >= 1 || itemQty <= 100){
 
                 //The closest() method find the parent of the input: article
                 const closestArticle = itemValue[i].closest("article");
@@ -273,7 +273,7 @@ function modifyItemQty(cart) {
 
                 window.location.reload();
                 
-                }
+                // }
             }
         });
     }
@@ -307,22 +307,21 @@ function getForm(cart) {
         const validFirstName = function (inputFirstName) {
             //RegExp to validate first name
             let firstNameRegExp = new RegExp(
-                '^[a-zA-Z,.\'-]{2,50}$'
+                "^[a-zA-ZáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ,.' -]{1,50}$"
             );
 
             let testFirstName = firstNameRegExp.test(inputFirstName.value);
             let firstNameErrorMsg = inputFirstName.nextElementSibling;
 
             if (testFirstName) {
-                firstNameErrorMsg.innerHTML = "Format de prénom valide";
+                firstNameErrorMsg.innerHTML = 'Format de prénom valide';
                 firstNameErrorMsg.classList.remove('text-alert');
                 firstNameErrorMsg.classList.add('text-success');
             } else {
-                firstNameErrorMsg.innerHTML = "Format de prénom non valide";
+                firstNameErrorMsg.innerHTML = 'Format de prénom non valide';
                 firstNameErrorMsg.classList.remove('text-success');
                 firstNameErrorMsg.classList.add('text-alert');
             }
-
             console.log(firstName);
         };
 
@@ -340,22 +339,21 @@ function getForm(cart) {
         const validLastName = function (inputLastName) {
             //RegExp to validate last name
             let lastNameRegExp = new RegExp(
-                '^[a-zA-Z,.\'-]{2,50}$'
+                "^[a-zA-ZáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ,.' -]{1,50}$"
             );
 
             let testLastName = lastNameRegExp.test(inputLastName.value);
             let lastNameErrorMsg = inputLastName.nextElementSibling;
 
             if (testLastName) {
-                lastNameErrorMsg.innerHTML = "Format de nom valide";
+                lastNameErrorMsg.innerHTML = 'Format de nom valide';
                 lastNameErrorMsg.classList.remove('text-alert');
                 lastNameErrorMsg.classList.add('text-success');
             } else {
-                lastNameErrorMsg.innerHTML = "Format de nom non valide";
+                lastNameErrorMsg.innerHTML = 'Format de nom non valide';
                 lastNameErrorMsg.classList.remove('text-success');
                 lastNameErrorMsg.classList.add('text-alert');
             }
-
             console.log(testLastName);
         };
 
@@ -372,22 +370,21 @@ function getForm(cart) {
         const validAddress = function (inputAddress) {
             //RegExp to validate Adresse
             let addressRegExp = new RegExp(
-                '^[a-zA-Z0-9\',.-]{2,50}$'
+                "^[a-zA-Z0-9áàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ,.' -]{1,100}$"
             );
 
             let testAddress = addressRegExp.test(inputAddress.value);
             let addressErrorMsg = inputAddress.nextElementSibling;
 
             if (testAddress) {
-                addressErrorMsg.innerHTML = "Adresse valide";
+                addressErrorMsg.innerHTML = 'Adresse valide';
                 addressErrorMsg.classList.remove('text-alert');
                 addressErrorMsg.classList.add('text-success');
             } else {
-                addressErrorMsg.innerHTML = "Format d'adresse non valide";
+                addressErrorMsg.innerHTML = 'Format adresse non valide';
                 addressErrorMsg.classList.remove('text-success');
                 addressErrorMsg.classList.add('text-alert');
             }
-
             console.log(testAddress);
         };
 
@@ -404,22 +401,21 @@ function getForm(cart) {
         const validCity = function (inputCity) {
             //RegExp to validate City
             let cityRegExp = new RegExp(
-                '^[a-zA-Z,.\'-]{2,50}$'
+                "^[a-zA-ZáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ,.' -]{1,100}$"
             );
 
             let testCity = cityRegExp.test(inputCity.value);
             let cityErrorMsg = inputCity.nextElementSibling;
 
             if (testCity) {
-                cityErrorMsg.innerHTML = "Ville valide";
+                cityErrorMsg.innerHTML = 'Ville valide';
                 cityErrorMsg.classList.remove('text-alert');
                 cityErrorMsg.classList.add('text-success');
             } else {
-                cityErrorMsg.innerHTML = "Format de ville non valide";
+                cityErrorMsg.innerHTML = 'Format de ville non valide';
                 cityErrorMsg.classList.remove('text-success');
                 cityErrorMsg.classList.add('text-alert');
             }
-
             console.log(testCity);
         };
 
@@ -441,15 +437,14 @@ function getForm(cart) {
             let emailErrorMsg = inputEmail.nextElementSibling;
 
             if (testEmail) {
-                emailErrorMsg.innerHTML = "Adresse email valide";
+                emailErrorMsg.innerHTML = 'Adresse email valid';
                 emailErrorMsg.classList.remove('text-alert');
                 emailErrorMsg.classList.add('text-success');
             } else {
-                emailErrorMsg.innerHTML = "Format d'adresse email non valide";
+                emailErrorMsg.innerHTML = 'Format adresse email non valide';
                 emailErrorMsg.classList.remove('text-success');
                 emailErrorMsg.classList.add('text-alert');
             }
-
             console.log(testEmail);
         };
     }
