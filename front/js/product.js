@@ -79,7 +79,7 @@ function addProductValuesToLocalStorage() {
         quantity: qty
     };
     //STORE THE OBJECT "PRODUCTVALUES" IN THE LOCALSTORAGE AS A STRING  
-    localStorage.setItem(id, JSON.stringify(productValues));
+    // localStorage.setItem(id, JSON.stringify(productValues));
 
     /*THIS FUNCTION VERIFY IF THE USER HAS CHOSEN A COLOR AND A QUANTITY < 0 AND > 100.
     IF NOT : THERE IS AN ALERT
