@@ -1,14 +1,15 @@
 /*Find the "id" of the article with window.location.search
-* and get it with URLSearchParams 
-*/
-
+ and get it with URLSearchParams */
  const idProduct = window.location.search;
  const urlParams = new URLSearchParams(idProduct);
  const id = urlParams.get("id");
- console.log({id});
+
+//SAVE ALLPRODUCTS BACK TO LOCALSTORAGE  
+function saveCart() {
+    localStorage.setItem("allProducts", JSON.stringify(cart));
+}
 
 //FETCH METHOD TO GET THE DATA IN THE API
-
 async function getDataProduct(_dataProduct) {
     
     const dataProduct = `http://localhost:3000/api/products/${id}`;
@@ -31,7 +32,6 @@ async function getDataProduct(_dataProduct) {
 //*************   PRODUCT ELEMENTS    *************/
 
 // DISPLAY THE ELEMENTS OF THE PRODUCT
-
 function showOneProduct(product) {
 
     //Select the elements in the div "Article"     
@@ -51,8 +51,6 @@ function showOneProduct(product) {
     // Select and display the option value of the color
     for (let color of product.colors) {
 
-        console.log(color);
-
         let colorOption = document.createElement("option");
         document.querySelector("#colors").appendChild(colorOption);
         colorOption.textContent = color;
@@ -60,12 +58,10 @@ function showOneProduct(product) {
     }
 };
 
-
 //*************   CART    *************/
 
 // CREATE GLOBAL VARIABLE CART TO GET THE PRODUCTVALUES IF IT EXISTS IN THE LOCALSTORAGE 
 let cart = JSON.parse(localStorage.getItem("allProducts"));
-
 
 function addProductValuesToLocalStorage() {
     //STORE THE VALUE OF THE COLOR AND THE QUANTITY THAT THE USER CHOOSE
@@ -78,12 +74,9 @@ function addProductValuesToLocalStorage() {
         color: colorOption,
         quantity: qty
     };
-    //STORE THE OBJECT "PRODUCTVALUES" IN THE LOCALSTORAGE AS A STRING  
-    // localStorage.setItem(id, JSON.stringify(productValues));
-
+  
     /*THIS FUNCTION VERIFY IF THE USER HAS CHOSEN A COLOR AND A QUANTITY < 0 AND > 100.
-    IF NOT : THERE IS AN ALERT
-    */
+    IF NOT : THERE IS AN ALERT */
     let verifyColorAndQuantity = () => {
         if (colorOption == null || colorOption === "" ) {
             alert("Sélectionnez une couleur");
@@ -111,16 +104,14 @@ function addProductValuesToLocalStorage() {
         if (cart == null) {
             cart = [];
             cart.push(productValues);
-            localStorage.setItem("allProducts", JSON.stringify(cart));
+            saveCart()
             alert("Le produit a bien été ajouté au panier");
         }
        
         /* If the cart is not null, the find() method search an element with the same color and the same id
         If it finds one, it increase the quantity
-        if it doesn'f find one, it push the new producValues in the cart
-        */
+        if it doesn'f find one, it push the new producValues in the cart */
         else if (cart != null) {
-
             const findProductInCart = cart.find(element => {
                 if (element._id === id && element.color === colorOption) {
                 return true;
@@ -129,7 +120,6 @@ function addProductValuesToLocalStorage() {
             }); 
 
             if (findProductInCart) {
-
                 let newQty = parseInt(findProductInCart.quantity) + parseInt(qty);
 
                 if (newQty > 100) {
@@ -146,8 +136,7 @@ function addProductValuesToLocalStorage() {
                 alert("Le produit a bien été ajouté au panier");
                 console.log("produit ajouté nouvel id")
             }
-            //SAVE ALLPRODUCTS BACK TO LOCALSTORAGE  
-            localStorage.setItem("allProducts", JSON.stringify(cart));
+            saveCart()
         }
         resetQuantityValue();
     }
@@ -162,11 +151,6 @@ let btnAddToBasket = document.querySelector("#addToCart");
 
 btnAddToBasket.addEventListener("click", ()=>  {
     addProductValuesToLocalStorage();
-    //List of the products
-    console.log(localStorage.getItem("allProducts"));
-    //Last product
-    console.log(localStorage.getItem("productValues"));
 });
-      
 
 getDataProduct();                     

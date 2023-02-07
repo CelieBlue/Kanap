@@ -1,10 +1,12 @@
 // CREATE GLOBAL VARIABLE CART TO GET THE PRODUCTVALUES IF IT EXISTS IN THE LOCALSTORAGE 
 let cart = JSON.parse(localStorage.getItem("allProducts"));
 
+/*The sort() function sorts the products by their id
+ The localeCompare() function is used to sort on strings*/
+cart.sort((a, b) => a._id.localeCompare(b._id));
 
-/*EventListener on the load ot the page that call the function getDataOrder
-to display the product stored in the localStorage  */
-// window.addEventListener('load');
+/*Condition 1: Remove the form when the basket is empty
+Condition 2: Call the getDataOrder to display the products of the cart*/
 if (cart === null || cart.length === 0) {
 
     const cartItem = document.createElement('article');
@@ -35,13 +37,12 @@ async function getDataOrder() {
         .then(function (value) {
 
             let api = value;
-
+            
             showCartProducts(api, cart);
             totalProductsInCart();
             totalPriceProductsInCart(api, cart);
             removeProductInCart();
             modifyItemQty(cart);
-            // getForm();
             postForm();
         })
 
@@ -52,20 +53,16 @@ async function getDataOrder() {
 //--------------------------------------------------------------------
 /* THIS FONCTION DISPLAY THE PRODUCTS IN THE CART
 WITH THE INFORMATIONS OF EACH PRODUCTS COMING FROM
-THE DATA API AND THE LOCALSTORAGE*/
+THE DATA API (name, price, description) AND THE LOCALSTORAGE (id, color, quantity)*/
 function showCartProducts(api, cart) {
 
         for (let product of cart) {
 
-            console.log(product._id);
-
             /*THE FIND METHOD IS USED TO FIND AN ID IN THE API THAT
             CORRESPONDS TO THE ID OF THE LOCALSTORAGE*/
-
             const dataApi = api.find((element) => element._id == product._id);
 
             // Create all the elements in the section "cart__Items"    
-
             let cartItem = document.createElement('article');
             let cartItemImg = document.createElement('div');
             let img = document.createElement('img');
@@ -81,9 +78,8 @@ function showCartProducts(api, cart) {
             let cartItemContentSettingsDelete = document.createElement('div');
             let deleteItem = document.createElement('p');
 
-
-            //Inject the API data in the elements
-
+            /*Inject the API data (dataApi) and localStorage data 
+            (product.color & quantity) in the elements */
             cartItem.textContent = "";
             cartItemImg.textContent = "";
             img.src = dataApi.imageUrl;
@@ -103,7 +99,6 @@ function showCartProducts(api, cart) {
             inputQuantity.value = `${product.quantity}`;
             cartItemContentSettingsDelete.textContent = "";
             deleteItem.textContent = "Supprimer";
-
 
             //Construct the nodes of the elements
             // IMG
@@ -145,7 +140,6 @@ function showCartProducts(api, cart) {
             cartItemContentSettingsDelete.appendChild(deleteItem);
             deleteItem.className = "deleteItem";
         }
-    
 
     //DISPLAY THE TOTAL QUANTITY OF PRODUCTS IN THE CART
     let totalQty = totalProductsInCart();
@@ -188,7 +182,6 @@ function totalPriceProductsInCart(api, cart) {
 
     return Intl.NumberFormat('fr-FR').format(totalPrice);
 }
-
 
 //--------------------------------------------------------------------
 //THIS FUNCTION REMOVES A PRODUCT IN THE CART WITH THE FILTER() METHOD
@@ -275,7 +268,6 @@ function modifyItemQty(cart) {
 }
 modifyItemQty();
 
-
 //========================================== F O R M ===========================================
 //THIS FUNCTION CHECKS THE VALIDITY OF THE FORM DATA
 function postForm() {
@@ -310,7 +302,6 @@ function postForm() {
                 return false;
             }
         };
-
 
         // VERIF LASTNAME ----------------------------------------------------------
         let lastName = document.querySelector("#lastName");
@@ -433,7 +424,6 @@ function postForm() {
 
     const btnform = document.querySelector("form");
 
-
     btnform.addEventListener("submit", (event) => {
         event.preventDefault();
 
@@ -452,7 +442,6 @@ function postForm() {
         else if (validEmail(email) == false) {
                 alert("Veuillez entrer une adresse email valide. Ex.: Dupont@domaine.com");
             }
-                // event.preventDefault;        
         else {
         
         let inputFirstName = document.querySelector("#firstName");
