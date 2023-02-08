@@ -28,12 +28,9 @@ if (cart === null || cart.length === 0) {
 async function getDataOrder() {
 
     const dataOrder = `http://localhost:3000/api/products`;
-
     await fetch(dataOrder)
-
         .then((response) =>
             response.json())
-
         .then(function (value) {
 
             let api = value;
@@ -45,7 +42,6 @@ async function getDataOrder() {
             modifyItemQty(cart);
             postForm();
         })
-
         .catch(function (error) {
             alert(error);
         });
@@ -151,7 +147,6 @@ function showCartProducts(api, cart) {
     let totalProducts = document.querySelector("#totalPrice");
     totalProducts.textContent = `${totalPrice}`;
 }
-
 //--------------------------------------------------------------------
 //THIS FUNCTION COUNTS AND RETURN THE TOTAL PRODUCTS IN THE CART
 function totalProductsInCart() {
@@ -161,10 +156,8 @@ function totalProductsInCart() {
         totalQty += product.quantity;
     }
     console.log("Total de produits dans le panier : " + totalQty);
-
     return totalQty;
 }
-
 //--------------------------------------------------------------------
 //THIS FUNCTION COUNTS AND RETURN THE TOTAL PRICE OF THE PRODUCTS
 function totalPriceProductsInCart(api, cart) {
@@ -172,17 +165,13 @@ function totalPriceProductsInCart(api, cart) {
 
     for (let product of cart) {
 
-
         // the find() method search an element with the same color and the same id
         const dataApi = api.find((element) => element._id == product._id);
-
         totalPrice += dataApi.price * product.quantity;
     }
     console.log("Prix total des produits : " + totalPrice);
-
     return Intl.NumberFormat('fr-FR').format(totalPrice);
 }
-
 //--------------------------------------------------------------------
 //THIS FUNCTION REMOVES A PRODUCT IN THE CART WITH THE FILTER() METHOD
 function removeProductInCart() {
@@ -201,11 +190,8 @@ function removeProductInCart() {
 
                 // the filter() method find and delete the element with the same color and the same id
                 let newCart = cart.filter(element => element._id !== cartId || element.color !== cartColor);
-
                 localStorage.setItem("allProducts", JSON.stringify(newCart));
-
                 alert("Le produit a bien été supprimé du panier");
-
                 window.location.reload();
             }
         });
@@ -225,7 +211,6 @@ function modifyItemQty(cart) {
             event.preventDefault();
 
             let itemQty = Number(itemValue[i].value);
-            console.log(itemQty);
 
             let verifyQuantity = () => {
                 if (itemQty < 1) {
@@ -240,11 +225,9 @@ function modifyItemQty(cart) {
             }
 
             if (itemQty < 1 || itemQty >= 100) {
-
                 verifyQuantity();
-                
-            } else {
 
+            } else {
                 //The closest() method find the parent of the input: article
                 const closestArticle = itemValue[i].closest("article");
 
@@ -258,9 +241,7 @@ function modifyItemQty(cart) {
                 });
 
                 findProductInCart.quantity = itemQty;
-
                 localStorage.setItem("allProducts", JSON.stringify(cart));
-
                 window.location.reload();
             }
         });
