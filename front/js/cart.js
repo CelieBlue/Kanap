@@ -201,6 +201,7 @@ function removeProductInCart() {
 // --------------------------------------------------------------------
 /* THIS FUNCTION MODIFIES THE QUANTITY VALUE IN THE CART AND IN THE LOCALSTORAGE
 IF THE QUANTITY VALUE IS NEGATIVE, THE PRODUCT IS REMOVED*/
+
 function modifyItemQty(cart) {
 
     let itemValue = document.querySelectorAll(".itemQuantity");
@@ -247,7 +248,6 @@ function modifyItemQty(cart) {
         });
     }
 }
-modifyItemQty();
 
 //========================================== F O R M ===========================================
 //THIS FUNCTION CHECKS THE VALIDITY OF THE FORM DATA
@@ -382,13 +382,13 @@ function postForm() {
         const validEmail = function (inputEmail) {
             //RegExp to validate email
             let emailRegExp = new RegExp(
-                 '^[a-zA-Z]+[a-z-A-Z.-_\d]+?@[a-zA-Z]+\.[a-z]{2,4}$'
+                 "^[a-zA-Z]+[a-z-A-Z.-_\d]+?@[a-zA-Z]+.[a-z]{2,4}$"
             );
 
             let emailErrorMsg = inputEmail.nextElementSibling;
 
             if (emailRegExp.test(inputEmail.value)) {
-                emailErrorMsg.innerHTML = 'Adresse email valid';
+                emailErrorMsg.innerHTML = 'Adresse email valide';
                 emailErrorMsg.classList.remove('text-alert');
                 emailErrorMsg.classList.add('text-success');
                 return true;
