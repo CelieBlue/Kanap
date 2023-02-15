@@ -5,6 +5,11 @@ let cart = JSON.parse(localStorage.getItem("allProducts"));
  The localeCompare() function is used to sort on strings*/
 cart.sort((a, b) => a._id.localeCompare(b._id));
 
+//SAVE ALLPRODUCTS BACK TO LOCALSTORAGE  
+function saveCart() {
+    localStorage.setItem("allProducts", JSON.stringify(cart));
+}
+
 /*Condition 1: Remove the form when the basket is empty
 Condition 2: Call the getDataOrder to display the products of the cart*/
 if (cart === null || cart.length === 0) {
@@ -34,12 +39,12 @@ async function getDataOrder() {
         .then(function (value) {
 
             let api = value;
-            
+   
             showCartProducts(api, cart);
             totalProductsInCart();
-            totalPriceProductsInCart(api, cart);
+            totalPriceProductsInCart(api);
             removeProductInCart();
-            modifyItemQty(cart);
+            modifyItemQty();
             postForm();
         })
         .catch(function (error) {
@@ -50,7 +55,7 @@ async function getDataOrder() {
 /* THIS FONCTION DISPLAY THE PRODUCTS IN THE CART
 WITH THE INFORMATIONS OF EACH PRODUCTS COMING FROM
 THE DATA API (name, price, description) AND THE LOCALSTORAGE (id, color, quantity)*/
-function showCartProducts(api, cart) {
+function showCartProducts(api) {
 
         for (let product of cart) {
 
@@ -136,16 +141,6 @@ function showCartProducts(api, cart) {
             cartItemContentSettingsDelete.appendChild(deleteItem);
             deleteItem.className = "deleteItem";
         }
-
-    //DISPLAY THE TOTAL QUANTITY OF PRODUCTS IN THE CART
-    let totalQty = totalProductsInCart();
-    let totalQuantity = document.querySelector("#totalQuantity");
-    totalQuantity.textContent = `${totalQty}`;
-
-    //DISPLAY THE TOTAL PRICE OF THE PRODUCTS IN THE CART
-    let totalPrice = totalPriceProductsInCart(api, cart);
-    let totalProducts = document.querySelector("#totalPrice");
-    totalProducts.textContent = `${totalPrice}`;
 }
 //--------------------------------------------------------------------
 //THIS FUNCTION COUNTS AND RETURN THE TOTAL PRODUCTS IN THE CART
@@ -155,25 +150,27 @@ function totalProductsInCart() {
     for (let product of cart) {
         totalQty += product.quantity;
     }
-    console.log("Total de produits dans le panier : " + totalQty);
-    return totalQty;
+    //DISPLAY THE TOTAL QUANTITY OF PRODUCTS IN THE CART
+    const totalQuantity = document.querySelector("#totalQuantity");
+    totalQuantity.textContent = totalQty;
 }
 //--------------------------------------------------------------------
-//THIS FUNCTION COUNTS AND RETURN THE TOTAL PRICE OF THE PRODUCTS
-function totalPriceProductsInCart(api, cart) {
+//THIS FUNCTION COUNTS AND RETURN THE TOTAL PRICE OF ALL PRODUCTS
+function totalPriceProductsInCart(api) {
     let totalPrice = 0;
 
     for (let product of cart) {
 
-        // the find() method search an element with the same color and the same id
+        //the find() method search an element with the same id
         const dataApi = api.find((element) => element._id == product._id);
         totalPrice += dataApi.price * product.quantity;
     }
-    console.log("Prix total des produits : " + totalPrice);
-    return Intl.NumberFormat('fr-FR').format(totalPrice);
+     //DISPLAY THE TOTAL PRICE OF THE PRODUCTS IN THE CART
+    const totalPriceProducts = document.querySelector("#totalPrice");
+    totalPriceProducts.textContent = Intl.NumberFormat('fr-FR').format(totalPrice);
 }
 //--------------------------------------------------------------------
-//THIS FUNCTION REMOVES A PRODUCT IN THE CART WITH THE FILTER() METHOD
+// THIS FUNCTION REMOVES A PRODUCT IN THE CART WITH THE FILTER() METHOD
 function removeProductInCart() {
 
     const btnRemove = document.querySelectorAll(".deleteItem");
@@ -185,24 +182,30 @@ function removeProductInCart() {
 
             if (confirm("Êtes-vous sûr de vouloir supprimer ce produit de votre panier ?")) {
 
-                let cartId = cart[i]._id;
-                let cartColor = cart[i].color;
+                //The closest() method find the parent of the input: article
+                const closestArticle = event.target.closest("article");
+
+                //The dataset propriety accesses the values of the attribute id or color 
+                const targetProductId = closestArticle.dataset.id;
+                const targetProductColor = closestArticle.dataset.color;
 
                 // the filter() method find and delete the element with the same color and the same id
-                let newCart = cart.filter(element => element._id !== cartId || element.color !== cartColor);
-                localStorage.setItem("allProducts", JSON.stringify(newCart));
+                cart = cart.filter(element => element._id !== targetProductId || element.color !== targetProductColor);
                 alert("Le produit a bien été supprimé du panier");
-                window.location.reload();
+                // The remove() method remove the product from the DOM
+                closestArticle.remove();
+                totalProductsInCart();
+                totalPriceProductsInCart(cart);
+                saveCart();
             }
         });
     }
 }
-
 // --------------------------------------------------------------------
 /* THIS FUNCTION MODIFIES THE QUANTITY VALUE IN THE CART AND IN THE LOCALSTORAGE
 IF THE QUANTITY VALUE IS NEGATIVE, THE PRODUCT IS REMOVED*/
 
-function modifyItemQty(cart) {
+function modifyItemQty() {
 
     let itemValue = document.querySelectorAll(".itemQuantity");
 
@@ -211,7 +214,7 @@ function modifyItemQty(cart) {
         itemValue[i].addEventListener("change", (event) => {
             event.preventDefault();
 
-            let itemQty = Number(itemValue[i].value);
+            let itemQty = Number(event.target.value);
 
             let verifyQuantity = () => {
                 if (itemQty < 1) {
@@ -242,13 +245,14 @@ function modifyItemQty(cart) {
                 });
 
                 findProductInCart.quantity = itemQty;
-                localStorage.setItem("allProducts", JSON.stringify(cart));
-                window.location.reload();
+                totalProductsInCart();
+                totalPriceProductsInCart(cart);
+                saveCart();
             }
         });
     }
 }
-
+modifyItemQty();
 //========================================== F O R M ===========================================
 //THIS FUNCTION CHECKS THE VALIDITY OF THE FORM DATA
 function postForm() {
