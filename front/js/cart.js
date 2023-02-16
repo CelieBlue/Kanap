@@ -229,9 +229,9 @@ function modifyItemQty() {
 
         itemValue[i].addEventListener("change", (event) => {
             event.preventDefault();
-
+            //target.value retrieves the value of the input field that has changed
             let itemQty = Number(event.target.value);
-
+            //This function verify if the quantity is > 100 or < 1. If yes, return false.
             let verifyQuantity = () => {
                 if (itemQty < 1) {
                     alert("Entrez une quantité entre 1 et 100");
@@ -250,16 +250,13 @@ function modifyItemQty() {
             } else {
                 //The closest() method find the parent of the input: article
                 const closestArticle = itemValue[i].closest("article");
-
                 //The dataset propriety accesses the values of the attribute id or color 
                 const targetProductId = closestArticle.dataset.id;
                 const targetProductColor = closestArticle.dataset.color;
-
                 // the find() method search an element with the same color and the same id
                 const findProductInCart = cart.find(element => {
                     return element._id === targetProductId && element.color === targetProductColor;
                 });
-
                 findProductInCart.quantity = itemQty;
                 totalProductsInCart();
                 totalPriceProductsInCart(cart);
@@ -282,7 +279,6 @@ function postForm() {
         form.firstName.addEventListener("change", function () {
             validFirstName(firstName);
         });
-
         const validFirstName = function (inputFirstName) {
             //RegExp to validate first name
             let firstNameRegExp = new RegExp(
@@ -301,7 +297,6 @@ function postForm() {
                 return false;
             }
         };
-
         // VERIF LASTNAME ----------------------------------------------------------
         let lastName = document.querySelector("#lastName");
 
@@ -309,7 +304,6 @@ function postForm() {
         form.lastName.addEventListener("change", function () {
             validLastName(lastName);
         });
-
         const validLastName = function (inputLastName) {
             //RegExp to validate last name
             let lastNameRegExp = new RegExp(
@@ -329,7 +323,6 @@ function postForm() {
                 return false;
             }
         };
-
         // VERIF ADRESSE ----------------------------------------------------------
         let address = document.querySelector("#address");
 
@@ -337,7 +330,6 @@ function postForm() {
         form.address.addEventListener("change", function () {
             validAddress(address);
         });
-
         const validAddress = function (inputAddress) {
             //RegExp to validate Adresse
             let addressRegExp = new RegExp(
@@ -356,7 +348,6 @@ function postForm() {
                 return false;
             }
         };
-
         // VERIF CITY ----------------------------------------------------------
         let city = document.querySelector("#city");
 
@@ -364,7 +355,6 @@ function postForm() {
         form.city.addEventListener("change", function () {
             validCity(city);
         });
-
         const validCity = function (inputCity) {
             //RegExp to validate City
             let cityRegExp = new RegExp(
@@ -383,7 +373,6 @@ function postForm() {
                 return false;
             }
         };
-
         // VERIF EMAIL ----------------------------------------------------------
         let email = document.querySelector("#email");
 
@@ -391,7 +380,6 @@ function postForm() {
         form.email.addEventListener("change", function () {
             validEmail(email);
         });
-
         const validEmail = function (inputEmail) {
             //RegExp to validate email
             let emailRegExp = new RegExp(
@@ -410,10 +398,8 @@ function postForm() {
                 return false;
             }
     }
-
 /*CHECKS THE FORM VALUES TO POST THEM IN THE LOCALSTORAGE
 /*PUT AN ADDEVENTLISTNER TO LISTEN WHEN THE ORDER BUTTON IS CLICKED */
-
     const btnform = document.querySelector("form");
 
     btnform.addEventListener("submit", (event) => {
@@ -436,20 +422,21 @@ function postForm() {
             }
         else {
         
+        //These variables retrieves the values of the form fields    
         let inputFirstName = document.querySelector("#firstName");
         let inputLastName = document.querySelector("#lastName");
         let inputAddress = document.querySelector("#address");
         let inputCity = document.querySelector("#city");
         let inputEmail = document.querySelector("#email");
 
-       
+        //New array to store the cart    
         let newCart = [];
 
         for (let product of cart) {
             newCart.push(product._id);
         }
         console.log(newCart);
-
+        //Create an object to with the values of the form fields and the products
         const order = {
             contact: {
                 firstName: inputFirstName.value,
@@ -460,7 +447,8 @@ function postForm() {
             },
             products: newCart,
         };
-
+        /*Send the datas of the object 'order' with the POST request 
+        The object is transformed in JSON and put in the body of the request*/
         const postInfos = {
             method: 'POST',
             headers: {
@@ -469,7 +457,10 @@ function postForm() {
             },
             body: JSON.stringify(order),
         };
-
+        /*Fetch() method to post the datas
+         Clear() method to empty the localStorage 
+         The location.href property returns a string with the confirmation page URL
+         with an order id*/
         fetch("http://localhost:3000/api/products/order", postInfos)
             .then((response) => response.json())
             .then((orderData) => {
