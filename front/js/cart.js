@@ -1,6 +1,10 @@
 // CREATE GLOBAL VARIABLE CART TO GET THE PRODUCTVALUES IF IT EXISTS IN THE LOCALSTORAGE 
 let cart = JSON.parse(localStorage.getItem("allProducts"));
 
+function saveCart() {
+    localStorage.setItem("allProducts", JSON.stringify(cart));
+}
+
 const productPrices = {};
 
 function storeProductsPrices(apiProducts) {
@@ -44,6 +48,7 @@ async function getDataOrder() {
 
             let api = value;
 
+            saveCart();
             storeProductsPrices(api);
             showCartProducts(api, cart);
             totalProductsInCart();
@@ -200,20 +205,19 @@ function removeProductInCart() {
                     closestArticle.remove();
                     totalProductsInCart();
                     totalPriceProductsInCart(cart);
-                    localStorage.setItem("allProducts", JSON.stringify(cart));
+                    saveCart();
                     emptyCart();
                 } else {
                     // The remove() method remove the product from the DOM
                     closestArticle.remove();
                     totalProductsInCart();
                     totalPriceProductsInCart(cart);
-                    localStorage.setItem("allProducts", JSON.stringify(cart));
+                    saveCart();
                 }
             }
         });
     }
 }
-
 // --------------------------------------------------------------------
 /* THIS FUNCTION MODIFIES THE QUANTITY VALUE IN THE CART AND IN THE LOCALSTORAGE
 IF THE QUANTITY VALUE IS NEGATIVE, THE PRODUCT IS REMOVED*/
@@ -259,7 +263,7 @@ function modifyItemQty() {
                 findProductInCart.quantity = itemQty;
                 totalProductsInCart();
                 totalPriceProductsInCart(cart);
-                localStorage.setItem("allProducts", JSON.stringify(cart));
+                saveCart();
             }
         });
     }
@@ -289,13 +293,11 @@ function postForm() {
 
             if (firstNameRegExp.test(inputFirstName.value)) {
                 firstNameErrorMsg.innerHTML = 'Format de prénom valide';
-                firstNameErrorMsg.classList.remove('text-alert');
-                firstNameErrorMsg.classList.add('text-success');
+                firstNameErrorMsg.style.color = '';
                 return true;
             } else {
                 firstNameErrorMsg.innerHTML = 'Format de prénom non valide';
-                firstNameErrorMsg.classList.remove('text-success');
-                firstNameErrorMsg.classList.add('text-alert');
+                firstNameErrorMsg.style.color = 'red';
                 return false;
             }
         };
@@ -318,13 +320,12 @@ function postForm() {
 
             if (lastNameRegExp.test(inputLastName.value)) {
                 lastNameErrorMsg.innerHTML = 'Format de nom valide';
-                lastNameErrorMsg.classList.remove('text-alert');
-                lastNameErrorMsg.classList.add('text-success');
+                lastNameErrorMsg.style.color = '';
                 return true;
             } else {
                 lastNameErrorMsg.innerHTML = 'Format de nom non valide';
                 lastNameErrorMsg.classList.remove('text-success');
-                lastNameErrorMsg.classList.add('text-alert');
+                lastNameErrorMsg.style.color = 'red';
                 return false;
             }
         };
@@ -347,13 +348,11 @@ function postForm() {
 
             if (addressRegExp.test(inputAddress.value)) {
                 addressErrorMsg.innerHTML = 'Adresse valide';
-                addressErrorMsg.classList.remove('text-alert');
-                addressErrorMsg.classList.add('text-success');
+                addressErrorMsg.style.color = '';
                 return true;
             } else {
                 addressErrorMsg.innerHTML = 'Format adresse non valide';
-                addressErrorMsg.classList.remove('text-success');
-                addressErrorMsg.classList.add('text-alert');
+                addressErrorMsg.style.color = 'red';
                 return false;
             }
         };
@@ -376,13 +375,11 @@ function postForm() {
 
             if (cityRegExp.test(inputCity.value)) {
                 cityErrorMsg.innerHTML = 'Ville valide';
-                cityErrorMsg.classList.remove('text-alert');
-                cityErrorMsg.classList.add('text-success');
+                cityErrorMsg.style.color = '';
                 return true;
             } else {
                 cityErrorMsg.innerHTML = 'Format de ville non valide';
-                cityErrorMsg.classList.remove('text-success');
-                cityErrorMsg.classList.add('text-alert');
+                cityErrorMsg.style.color = 'red';
                 return false;
             }
         };
@@ -405,13 +402,11 @@ function postForm() {
 
             if (emailRegExp.test(inputEmail.value)) {
                 emailErrorMsg.innerHTML = 'Adresse email valide';
-                emailErrorMsg.classList.remove('text-alert');
-                emailErrorMsg.classList.add('text-success');
+                emailErrorMsg.style.color = '';
                 return true;
             } else {
                 emailErrorMsg.innerHTML = 'Format adresse email non valide';
-                emailErrorMsg.classList.remove('text-success');
-                emailErrorMsg.classList.add('text-alert');
+                emailErrorMsg.style.color = 'red';
                 return false;
             }
     }
